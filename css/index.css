@@ -1,0 +1,56 @@
+/* 首页样式 */
+.main {
+	width: 980px;
+	height: 455px;
+    margin-left: 250px;
+    margin-top: 0px;
+}
+
+.focus {
+	position: relative;
+	width: 670px;
+    height: 400px;
+	background-color: purple;
+}
+
+.researchflash {
+	width: 240px;
+    height: 400px;
+    margin-right: 60px;
+}
+
+/* 推荐模块 */
+.recommend {
+	height: 163px;
+	margin-top: 10px;
+}
+.recom-hd {
+	width: 200px;
+	height: 163px;
+	/* background-color: #5c5251; */
+	text-align: center;
+}
+.recom-hd img {
+	margin: 0;
+}
+.recom-hd h3 {
+	font-size: 18px;
+	color: #fff;
+	font-weight: normal;
+}
+.recom-bd {
+	width: 960px;
+    height: 200px;
+    margin-left: 40px;
+	/* background-color: #ebebeb; */
+}
+.recom-bd li {
+	float: left;
+	width: 230px;
+	height: 50px;
+	border-right: 1px solid #ccc;
+    margin-top: 10px;
+}
+.recom-bd .last {
+	border-right: 0;
+}

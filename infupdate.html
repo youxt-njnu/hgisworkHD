@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>清史GIS-清朝历史信息化、地图可视化</title>
+    <meta
+      name="description"
+      content="我们是清史地理信息系统制作者，系统提供对清史信息的增删改查、地图可视化和历史地理信息的探索"
+    />
+    <meta
+      name="keywords"
+      content="清朝历史,GIS,地理信息系统,地图,历史地理,数据库,职官"
+    />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <!-- 引入图标 -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <!-- 引入css -->
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/infupdate.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <!-- 引入js -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!-- header制作 -->
+    <div class="header w">
+      <!-- logo -->
+      <div class="logo">
+        <a href="index.html" title="清史GIS">清史GIS</a>
+        <h1>清史WebGIS</h1>
+      </div>
+      <!-- search -->
+      <div class="search">
+        <input type="text" class="text" value="请搜索内容..." />
+        <button id="btn-search">搜索</button>
+      </div>
+      <!-- user -->
+      <div class="user">
+        <img src="img/user.jpg" alt="" style="vertical-align: middle" />
+        YXT
+      </div>
+      <!-- colworker -->
+      <div class="colworker">
+        <i class="worker">🛠 </i>我的协作成员 <i class="arrow"> &gt; </i>
+        <i class="count">3</i>
+      </div>
+    </div>
+    <!-- Button trigger modal -->
+    <!-- <button
+                              type="button"
+                              class="btn btn-primary btn-lg"
+                              data-toggle="modal"
+                              data-target="#LoginTop"
+                            >
+                              登录|注册
+                            </button>
+            
+                            <div
+                              class="modal fade"
+                              id="LoginTop"
+                              tabindex="-1"
+                              role="dialog"
+                              aria-labelledby="myModalLabel"
+                            >
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button
+                                      type="button"
+                                      class="close"
+                                      data-dismiss="modal"
+                                      aria-label="Close"
+                                    >
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">登录</h4>
+                                  </div>
+                                  <div class="modal-body">...</div>
+                                  <div class="modal-footer">
+                                    <button
+                                      type="button"
+                                      class="btn btn-default"
+                                      data-dismiss="modal"
+                                    >
+                                      关闭
+                                    </button>
+                                    <button type="button" class="btn btn-primary">
+                                      登录|注册
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div> -->
+    <!-- header结束 -->
+
+    <!-- nav制作 -->
+    <div class="nav">
+      <div class="w">
+        <div class="dropdown fl">
+          <div class="dt" onclick="openNav()">数据添加及符号化</div>
+        </div>
+        <!-- 右侧导航 -->
+        <div class="navitems fl">
+          <ul>
+            <li>
+              <a href="index.html"><h4>首页</h4> </a>
+            </li>
+            <li>
+              <a href="viewmap.html"><h4>地图展示</h4> </a>
+            </li>
+            <li>
+              <a href="analysis.html"><h4>查询统计</h4> </a>
+            </li>
+            <li>
+              <a href="infupdate.html"><h4>信息更新</h4> </a>
+            </li>
+            <li>
+              <a href="hgis.html"><h4>历史地理</h4> </a>
+            </li>
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- nav结束 -->
+
+    <!-- main开始 -->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="dropdown">
+            <button class="btn btn-default" data-toggle="dropdown">
+              基础数据 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header"></li>
+              <li><a href="">Spring Boot</a></li>
+              <li class="divider"></li>
+              <li class="dropdown-header">专题数据</li>
+              <li><a href="">Redis</a></li>
+              <li><a href="">MongoDB</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="button-group">
+            <button class="btnupdate">查看</button>
+            <button class="btnupdate">新增</button>
+            <button class="btnupdate">修改</button>
+            <button class="btnupdate">删除</button>
+            <button class="btnupdate">关联</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-bordered text-center">
+          <tr">
+            <th class="text-center">列1</th>
+            <th class="text-center">列2</th>
+            <th class="text-center">列3</th>
+            <th class="text-center">列4</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>a</td>
+              <td>28</td>
+              <td>2012/12/12</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>b</td>
+              <td>28</td>
+              <td>2012/12/12</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>b</td>
+              <td>28</td>
+              <td>2012/12/12</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>b</td>
+              <td>28</td>
+              <td>2012/12/12</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>b</td>
+                <td>28</td>
+                <td>2012/12/12</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- main结束 -->
+
+    <!-- footer开始 -->
+    <div class="footer">
+        <div class="w">
+          <div class="mod_copyright">
+            <p class="mod_copyright_links">
+              <a href="#">本版支持</a> | <a href="#">关于本站</a> |
+              <a href="#">联系站长</a> |
+              <a href="#">版权声明</a>
+            </p>
+            <p class="mod_copyright_info">
+              版权所有Copyright@2022-2023 <br />
+              作者：10190208尤香婷
+            </p>
+          </div>
+        </div>
+      </div>
+    <!-- footer结束 -->
+  </body>
+</html>

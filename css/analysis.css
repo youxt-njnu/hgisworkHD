@@ -1,0 +1,28 @@
+.searchinleft {
+  position: absolute;
+  top: 22%;
+  left: 60px;
+}
+.button-group {
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  position: absolute;
+  width: 100px;
+  top: 28%;
+  left: 51px;
+  padding: 10px;
+}
+.text {
+  float: left;
+  width: 157px;
+  height: 32px;
+  border: 2px solid #b1191a;
+  padding-left: 10px;
+  color: #ccc;
+}
+.panelanalysis {
+  width: 209px;
+  background-color: #f0eeee;
+  border: 5px;
+  font-size: 16px;
+  color: #b1191a;
+}

@@ -1,0 +1,15 @@
+.btnupdate {
+    margin-left: 20px;
+    width: 120px;
+    height: 30px;
+    background-color: #b1191a;
+    border: 5px;
+    font-size: 16px;
+    color: #fff;
+  }
+  .dropdown {
+    width: 209px;
+  }
+  .row {
+    margin-left:5px;
+  }
