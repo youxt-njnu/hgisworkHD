@@ -5,8 +5,8 @@ const map = new mapboxgl.Map({
   // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
   style: "mapbox://styles/mapbox/streets-v11",
   //mapbox://styles/linklink/cl0t7nvvs00jc14qyybip4kkv
-  center: [116.04, 39.907],
-  zoom: 10,
+  center: [120.3, 30.3],
+  zoom: 7,
 });
 
 map.on("load", () => {
@@ -41,72 +41,72 @@ map.on("load", () => {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "theatre-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.2, 39.9],
+            coordinates: [120.2, 30.2],
           },
         },
         {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "bar-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.090372, 39.881189],
+            coordinates: [120.2, 30.1],
           },
         },
         {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "art-gallery-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.111561, 39.882342],
+            coordinates: [120.3, 30.3],
           },
         },
         {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "bicycle-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.052477, 39.943951],
+            coordinates: [120.3, 30.4],
           },
         },
         {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "rocket-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.043444, 39.909664],
+            coordinates: [120.3, 30.5],
           },
         },
         {
           type: "Feature",
           properties: {
             description:
-              '<img src="img/logo.png" alt="" style="width: 60%;"><p style="font-size: 16px;">详细信息：。。。</p><span style="font-size: 16px; padding: 10px;"><a href="#">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
             icon: "music-15",
           },
           geometry: {
             type: "Point",
-            coordinates: [116.031706, 39.914581],
+            coordinates: [120.4, 30.2],
           },
         },
       ],
