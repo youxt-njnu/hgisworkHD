@@ -1,40 +1,73 @@
 //页面
 var view = new ol.View({
   // 设置中心点坐标，因为加载的腾讯瓦片地图的坐标系是墨卡托投影坐标系（'EPSG:3857'），所以要对经纬度坐标点进行投影，ol.proj.transform既是openlayer自带的坐标系转换函数，支持WGS84和墨卡托投影的互换。
-  center: ol.proj.transform([104, 30.5], "EPSG:4326", "EPSG:3857"),
+  center: ol.proj.transform([104, 30.6], "EPSG:4326", "EPSG:3857"),
   // 比例尺级数为9
-  zoom: 9,
+  zoom: 11,
 });
 
+//----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
+var topiclayer = new ol.layer.Image({
+  title: "land84",
+  source: new ol.source.ImageWMS({
+    ratio: 1,
+    url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
+    // 请求参数
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.1.1",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: true,
+      tiled: true,
+      LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
+      exceptions: "application/vnd.ogc.se_inimage",
+      singleTile: true, //单瓦片，渲染成一张图片
+    },
+  }),
+});
+
+// 加载mapbox底图和geoserver发布的WTMS底图
 var layers = [
-  // 加载mapbox底图
   new ol.layer.Tile({
+    title: "satellite",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "light",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "dark",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "streets",
     source: new ol.source.XYZ({
       url: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
       //https://api.mapbox.com/styles/v1/{my_username}/{my_style_id}/tiles/256/{z}/{x}/{y}?access_token={my_access_token}
       //url: "http://rt{0-3}.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0",
     }),
   }),
-  // 加载geoserver发布的WTMS底图，其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
-  new ol.layer.Image({
-    source: new ol.source.ImageWMS({
-      ratio: 1,
-      url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
-      // 请求参数
-      params: {
-        SERVICE: "WMS",
-        VERSION: "1.1.1",
-        REQUEST: "GetMap",
-        FORMAT: "image/png",
-        TRANSPARENT: true,
-        tiled: true,
-        LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
-        exceptions: "application/vnd.ogc.se_inimage",
-        singleTile: true, //单瓦片，渲染成一张图片
-      },
+  new ol.layer.Tile({
+    title: "outdoors",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
     }),
   }),
+  topiclayer,
 ];
+
 //地图
 var map = new ol.Map({
   target: "map", //指向div
@@ -42,18 +75,56 @@ var map = new ol.Map({
   view: view,
 });
 
-// function openMenu() {
-//   console.log("ok");
-//   const layerList = document.getElementById("menu");
-//   const inputs = layerList.getElementsByTagName("input");
-//   layerList.style.display = "inline";
-//   for (const input of inputs) {
-//     input.onclick = (layer) => {
-//       const layerId = layer.target.id;
-//       map.setStyle("mapbox://styles/mapbox/" + layerId);
-//     };
+//地图渲染完成后的事件
+//map.once("rendercomplete", function () { viewFitLayer(geoJsonLayer) });
+//把地图视图缩放到geojson测试数据视图范围内
+
+//视图缩放至图层范围
+// function viewFitLayer(layer) {
+//   var extent = layer.getSource().getExtent();
+//   if (extent) {
+//     view.fit(extent, {
+//       duration: 1000,
+//       easing: ol.easing.UpAndDown,
+//     });
 //   }
 // }
+
+//切换底图
+function openMenu() {
+  console.log("ok");
+  const layerList = document.getElementById("menu");
+  layerList.style.display = "inline";
+  layerList.addEventListener("click", (event) => {
+    if (event.target.checked) {
+      // 如果选中某一复选框
+      // 通过DOM元素的id值来判断应该对哪个图层进行显示
+      for (ie = 0; ie < 5; ie++) {
+        map.getLayers().item(ie).setVisible(false);
+      }
+      switch (event.target.id) {
+        case "satellite-v9":
+          map.getLayers().item(0).setVisible(true);
+          break;
+        case "light-v10":
+          map.getLayers().item(1).setVisible(true);
+          break;
+        case "dark-v10":
+          map.getLayers().item(2).setVisible(true);
+          break;
+        case "streets-v11":
+          map.getLayers().item(3).setVisible(true);
+          break;
+        case "outdoors-v11":
+          map.getLayers().item(4).setVisible(true);
+          break;
+        default:
+          break;
+      }
+      map.getLayers().item(5).setVisible(true);
+    }
+  });
+}
 
 //地图点击事件
 //线上线下访问url不同，可变配置提出
