@@ -219,3 +219,59 @@ function createTextStyle(feature) {
 function getText(feature) {
   return feature.get("les-miserables_name").toString();
 }
+
+//模态框的操作相应
+$(function () {
+  $("#btn").click(function () {
+    $("#myModal").modal("toggle");
+  });
+
+  $("#btn0").click(function () {
+    //调用方法
+    $("#myModal").modal("hide");
+  });
+
+  $("#btn1").click(function () {
+    // $("#myModal").modal({
+    //     show:true,
+    // });
+    $("#myModal1").modal("toggle");
+  });
+
+  $("#btn11").click(function () {
+    //调用方法
+    $("#myModal1").modal("hide");
+  });
+
+  $("#btn2").click(function () {
+    // $("#myModal").modal({
+    //     show:true,
+    // });
+    $("#myModal2").modal("toggle");
+  });
+
+  $("#btn22").click(function () {
+    //调用方法
+    $("#myModal2").modal("hide");
+    console.log("hide");
+  });
+
+  //事件使用 对应组件选择器.on(事件名,事件处理函数)
+  $("#myModal,#myModal1,#myModal2").on("show.bs.modal", function () {
+    console.log("调用show执行1");
+  });
+  $("#myModal,#myModal1,#myModal2").on("shown.bs.modal", function () {
+    console.log("展示之后执行2");
+  });
+  $("#myModal,#myModal1,#myModal2").on("hide.bs.modal", function () {
+    console.log("调用hide执行1");
+  });
+  $("#myModal,#myModal1,#myModal2").on("hidden.bs.modal", function () {
+    console.log("完全隐藏之后执行2");
+  });
+});
+
+function btnclose(str) {
+  $(str).modal("hide");
+  console.log("hide");
+}

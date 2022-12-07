@@ -112,7 +112,7 @@
     <div class="nav">
       <div class="w">
         <div class="dropdown fl">
-          <div class="dt">数据添加及符号化</div>
+          <div class="dt"></div>
         </div>
         <!-- 右侧导航 -->
         <div class="navitems fl">
@@ -173,6 +173,38 @@
 
       <!-- 数据选择按钮组开始 -->
       <div class="button-group">
+        <button class="btn btn-success btn-smm" id="btn1">基础数据选择</button>
+        <div class="modal fade" id="myModal1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <!--模态框标题-->
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">基础数据选择</h4>
+              </div>
+              <!--中心内容-->
+              <form action="#">
+                ddd
+                <!--脚注-->
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" id="btn11">
+                    确定
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                  >
+                    取消
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <button class="btn btn-success btn-smm" id="btn">专题数据选择</button>
         <div class="modal fade" id="myModal">
           <div class="modal-dialog">
@@ -221,17 +253,19 @@
                         >|<a href="#">浙江省</a>|<a href="#">江西省</a>|<a
                           href="#"
                           >福建省</a
-                        >|<a href="#">台湾省 广东省</a>|<a href="#">广西省</a
-                        >|<a href="#">湖南省</a>|<a href="#">湖北省</a>|<a
+                        >|<a href="#">广东省</a>|<a href="#">广西省</a>|<a
                           href="#"
-                          >云南省 贵州省</a
+                          >湖南省</a
+                        >|<a href="#">湖北省</a>|<a href="#">云南省 贵州省</a
                         >|<a href="#">四川省</a>|<a href="#">陕西省</a>|<a
                           href="#"
                           >甘肃省</a
-                        >|<a href="#">奉天省 吉林省</a>|<a href="#">黑龙江省</a
-                        >|<a href="#">新疆省 乌苏雅里台将军辖区</a>|<a href="#"
-                          >西宁办事大臣辖区 驻藏办事大臣辖区</a
-                        >|<a href="#">内札萨克蒙古地方</a>
+                        >|<a href="#">吉林省</a>|<a href="#">黑龙江省</a>|<a
+                          href="#"
+                          >乌苏雅里台将军辖区</a
+                        >|<a href="#">驻藏办事大臣辖区</a>|<a href="#"
+                          >内札萨克蒙古地方</a
+                        >
                       </div>
                     </div>
                   </div>
@@ -308,7 +342,9 @@
                 </div>
                 <!--脚注-->
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">确定</button>
+                  <button type="submit" class="btn btn-primary" id="btn0">
+                    确定
+                  </button>
                   <button
                     type="button"
                     class="btn btn-danger"
@@ -321,155 +357,15 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success btn-smm" id="btn1">基础数据选择</button>
-        <div class="modal fade" id="myModal1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <!--模态框标题-->
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">基础数据选择</h4>
-              </div>
-              <!--中心内容-->
-              <form action="#">
-                <div
-                  class="panel-group"
-                  id="accordion"
-                  role="tablist"
-                  aria-multiselectable="true"
-                >
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                      <h4 class="panel-title">
-                        <a
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseOne"
-                          aria-expanded="true"
-                          aria-controls="collapseOne"
-                        >
-                          按地区分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseOne"
-                      class="panel-collapse collapse in"
-                      role="tabpanel"
-                      aria-labelledby="headingOne"
-                    >
-                      <div class="panel-body">
-                        <a href="#">直隶省</a>|<a href="#">山西省</a>|<a
-                          href="#"
-                          >山东省</a
-                        >|<a href="#">河南省</a>|<a href="#">江苏省 安徽省</a
-                        >|<a href="#">浙江省</a>|<a href="#">江西省</a>|<a
-                          href="#"
-                          >福建省</a
-                        >|<a href="#">台湾省 广东省</a>|<a href="#">广西省</a
-                        >|<a href="#">湖南省</a>|<a href="#">湖北省</a>|<a
-                          href="#"
-                          >云南省 贵州省</a
-                        >|<a href="#">四川省</a>|<a href="#">陕西省</a>|<a
-                          href="#"
-                          >甘肃省</a
-                        >|<a href="#">奉天省 吉林省</a>|<a href="#">黑龙江省</a
-                        >|<a href="#">新疆省 乌苏雅里台将军辖区</a>|<a href="#"
-                          >西宁办事大臣辖区 驻藏办事大臣辖区</a
-                        >|<a href="#">内札萨克蒙古地方</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                      <h4 class="panel-title">
-                        <a
-                          class="collapsed"
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseTwo"
-                          aria-expanded="false"
-                          aria-controls="collapseTwo"
-                        >
-                          按专题分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseTwo"
-                      class="panel-collapse collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingTwo"
-                    >
-                      <div class="panel-body">
-                        <a href="#">文化传播</a>|<a href="#">交通商贸</a>|<a
-                          href="#"
-                          >土地利用</a
-                        >|<a href="#">城址聚落</a>|<a href="#">考古遗址 </a>|<a
-                          href="#"
-                          >民族宗教</a
-                        >|<a href="#">生态环境</a>|<a href="#">文献资料</a>|<a
-                          href="#"
-                          >传统制造</a
-                        >|<a href="#">内外战争</a>|<a href="#">社会变革</a>|<a
-                          href="#"
-                          >人民运动</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                      <h4 class="panel-title">
-                        <a
-                          class="collapsed"
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseThree"
-                          aria-expanded="false"
-                          aria-controls="collapseThree"
-                        >
-                          按时间段分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseThree"
-                      class="panel-collapse collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingThree"
-                    >
-                      <div class="panel-body">
-                        <a href="#">1550-1600</a> | <a href="#">1601-1650</a> |
-                        <a href="#">1651-1700</a> | <a href="#">1701-1750</a> |
-                        <a href="#">1751-1800</a> | <a href="#">1801-1850</a> |
-                        <a href="#">1851-1900</a> |
-                        <a href="#">1900-1950</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--脚注-->
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">确定</button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                  >
-                    取消
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-success btn-smm" id="btn2">数据符号化</button>
+
+        <button
+          class="btn btn-success btn-smm"
+          data-toggle="modal"
+          data-target="myModal2"
+          id="btn2"
+        >
+          数据符号化
+        </button>
         <div class="modal fade" id="myModal2">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -495,17 +391,19 @@
                   <div class="form-group">
                     <label for="exampleInputFile">符号化文件</label>
                     <input type="file" id="exampleInputFile2" />
-                    <p class="help-block">文件为ArcGIS软件导出的符号配置文件</p>
+                    <p class="help-block">文件为SLD格式符号配置文件</p>
                   </div>
-                  <div class="checkbox">
+                  <!-- <div class="checkbox">
                     <label>
                       <input type="checkbox" /> 同时打开本机ArcGIS软件
                     </label>
-                  </div>
+                  </div> -->
                 </div>
                 <!--脚注-->
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">确定</button>
+                  <button type="submit" class="btn btn-primary" id="btn22">
+                    确定
+                  </button>
                   <button
                     type="button"
                     class="btn btn-danger"

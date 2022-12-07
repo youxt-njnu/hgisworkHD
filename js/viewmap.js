@@ -173,62 +173,6 @@ map.addControl(fullScreen);
 //-----------add map controls----------------------
 
 $(function () {
-  $("#btn").click(function () {
-    // $("#myModal").modal({
-    //     show:true,
-    // });
-    $("#myModal").modal("toggle");
-  });
-
-  $("#btn0").click(function () {
-    //调用方法
-    $("#myModal").modal("toggle");
-  });
-
-  //事件使用 对应组件选择器.on(事件名,事件处理函数)
-  $("#myModal").on("show.bs.modal", function () {
-    console.log("调用show执行1");
-  });
-  $("#myModal").on("shown.bs.modal", function () {
-    console.log("展示之后执行2");
-  });
-  $("#myModal").on("hide.bs.modal", function () {
-    console.log("调用hide执行1");
-  });
-  $("#myModal").on("hidden.bs.modal", function () {
-    console.log("完全隐藏之后执行2");
-  });
-});
-
-$(function () {
-  $("#btn1").click(function () {
-    // $("#myModal").modal({
-    //     show:true,
-    // });
-    $("#myModal1").modal("toggle");
-  });
-
-  $("#btn11").click(function () {
-    //调用方法
-    $("#myModal1").modal("toggle");
-  });
-
-  //事件使用 对应组件选择器.on(事件名,事件处理函数)
-  $("#myModal1").on("show.bs.modal", function () {
-    console.log("调用show执行1");
-  });
-  $("#myModal1").on("shown.bs.modal", function () {
-    console.log("展示之后执行2");
-  });
-  $("#myModal1").on("hide.bs.modal", function () {
-    console.log("调用hide执行1");
-  });
-  $("#myModal1").on("hidden.bs.modal", function () {
-    console.log("完全隐藏之后执行2");
-  });
-});
-
-$(function () {
   $("#btn2").click(function () {
     // $("#myModal").modal({
     //     show:true,

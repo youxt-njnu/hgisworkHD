@@ -20,7 +20,7 @@ var hrChart = echarts.init(document.getElementById("lineH"));
 function hFun(x_data, y_data) {
   hrChart.setOption(
     {
-      color: ["#1e63d8"],
+      color: ["#b1191a"],
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -33,8 +33,8 @@ function hFun(x_data, y_data) {
       },
       grid: {
         left: "3%",
-        right: "20%",
-        bottom: "20%",
+        right: "3%",
+        bottom: "10%",
         containLabel: true,
       },
       xAxis: {
@@ -44,7 +44,7 @@ function hFun(x_data, y_data) {
         /* 改变x轴颜色 */
         axisLine: {
           lineStyle: {
-            color: "#00a2e2",
+            color: "#b1191a",
             width: 1, // 这里是为了突出显示加上的
           },
         },
@@ -59,14 +59,14 @@ function hFun(x_data, y_data) {
 
         type: "value",
         scale: true,
-        name: "频率图",
+        name: "关键词出现频率分布图(/100)",
         min: 0, // 就是这两个 最小值
         max: "dataMax", // 最大值
         splitNumber: 10,
         /* 改变y轴颜色 */
         axisLine: {
           lineStyle: {
-            color: "#00a2e2",
+            color: "#b1191a",
             width: 1, // 这里是为了突出显示加上的
           },
         },
@@ -74,15 +74,15 @@ function hFun(x_data, y_data) {
       },
       series: [
         {
-          name: "次数",
+          name: "频率(/100)",
           type: "line",
           symbol: "circle", // 折线点设置为实心点
           symbolSize: 6, // 折线点的大小
           itemStyle: {
             normal: {
-              color: "#1bdaf8", // 折线点的颜色
+              color: "#d4c395", // 折线点的颜色
               lineStyle: {
-                color: "#0d427e", // 折线的颜色
+                color: "#b7a166", // 折线的颜色
               },
             },
           },
@@ -96,15 +96,15 @@ function hFun(x_data, y_data) {
                 [
                   {
                     offset: 0,
-                    color: "#0e4b7a", // 0% 处的颜色
+                    color: "#8b8a52", // 0% 处的颜色
                   },
                   {
                     offset: 0.6,
-                    color: "#0d3f70", // 60% 处的颜色
+                    color: "#c2c064", // 60% 处的颜色
                   },
                   {
                     offset: 1,
-                    color: "#0c3367", // 100% 处的颜色
+                    color: "#d5d4a3", // 100% 处的颜色
                   },
                 ],
                 false
@@ -183,9 +183,9 @@ $.getJSON("../datmp/example.json", function (graph) {
   chartGraph.setOption(option);
 });
 
-if (option && typeof option === "object") {
-  chartGraph.setOption(option);
-}
+// if (option && typeof option === "object") {
+//   chartGraph.setOption(option);
+// }
 
 window.addEventListener("resize", chartGraph.resize);
 

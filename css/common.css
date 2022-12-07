@@ -13,7 +13,7 @@
 }
 
 .style-red {
-  color: #c81623;
+  color: #b7a166;
 }
 .spacer {
   width: 1px;
@@ -94,7 +94,7 @@
   text-align: center;
 }
 .worker {
-  color: #da5555;
+  color: #d4c395;
 }
 .arrow {
   margin-left: 5px;
@@ -119,7 +119,7 @@
   margin-left: 60px;
   margin-right: 60px;
   height: 45px;
-  border-bottom: 2px solid #b1191a;
+  border-bottom: 2px solid #d4c395;
 }
 
 .dropdown {
@@ -128,11 +128,14 @@
 }
 .dropdown .dt {
   height: 100%;
-  background-color: #b1191a;
+  /* background-color: #b1191a; */
+  background-image: url(../img/images.jfif);
+  background-size: 100%;
   font-size: 16px;
   color: #fff;
   text-align: center;
   line-height: 45px;
+  box-shadow: 2px -4px 3px rgba(0, 0, 0, 0.5);
 }
 
 .navitems li {
