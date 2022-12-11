@@ -75,21 +75,6 @@ var map = new ol.Map({
   view: view,
 });
 
-//地图渲染完成后的事件
-//map.once("rendercomplete", function () { viewFitLayer(geoJsonLayer) });
-//把地图视图缩放到geojson测试数据视图范围内
-
-//视图缩放至图层范围
-// function viewFitLayer(layer) {
-//   var extent = layer.getSource().getExtent();
-//   if (extent) {
-//     view.fit(extent, {
-//       duration: 1000,
-//       easing: ol.easing.UpAndDown,
-//     });
-//   }
-// }
-
 //切换底图
 function openMenu() {
   console.log("ok");
@@ -167,23 +152,6 @@ $("#map").click(function (e) {
       });
       //将矢量图层添加到map
       map.addLayer(vectorLayer);
-      //更新属性表
-      for (var i = 0; i < data["features"].length; i++) {
-        var properties = data["features"][i]["properties"];
-        var idHD = properties["id_0"];
-        var categoryHD = properties["les-miserables_category"];
-        var nameHD = properties["les-miserables_name"];
-        var valueHD = properties["nles-miserables_value"];
-
-        var tabletxt = "<tr><td>" + idHD + "</td><td>";
-        categoryHD +
-          "</td><td>" +
-          nameHD +
-          "</td><td>" +
-          valueHD +
-          "</td></tr>";
-        $("#attributetbody").append(tabletxt);
-      }
     },
     error: function (data) {
       console.log("faile");
@@ -271,7 +239,8 @@ $(function () {
   });
 });
 
-function btnclose(str) {
-  $(str).modal("hide");
-  console.log("hide");
-}
+//TODO 首先是实现，选择数据，然后加载到地图上
+
+//TODO 然后实现点击数据，可以显示其属性的那种标注性质的
+
+//TODO 然后思考怎么获取到本地的SLD文件，进行个性符号化设置

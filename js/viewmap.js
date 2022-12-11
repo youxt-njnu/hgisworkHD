@@ -1,176 +1,215 @@
-mapboxgl.accessToken =
-  "pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg";
-const map = new mapboxgl.Map({
-  container: "map",
-  // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-  style: "mapbox://styles/mapbox/streets-v11",
-  //mapbox://styles/linklink/cl0t7nvvs00jc14qyybip4kkv
-  center: [120.3, 30.3],
-  zoom: 7,
+// properties: {
+//   description:
+//     '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
+//   icon: "theatre-15",
+// }
+
+//页面
+var view = new ol.View({
+  // 设置中心点坐标，因为加载的腾讯瓦片地图的坐标系是墨卡托投影坐标系（'EPSG:3857'），所以要对经纬度坐标点进行投影，ol.proj.transform既是openlayer自带的坐标系转换函数，支持WGS84和墨卡托投影的互换。
+  center: ol.proj.transform([104, 30.6], "EPSG:4326", "EPSG:3857"),
+  // 比例尺级数为9
+  zoom: 11,
 });
 
-map.on("load", () => {
-  map.addSource("wms-source", {
-    type: "raster",
-    tiles: [
-      "http://localhost:8080/geoserver/cite/wms?service=WMS&version=1.1.0&request=GetMap&layers=cite%3Ariver&bbox=2.0353862E7%2C2913237.5%2C2.0383676E7%2C2942737.5&width=768&height=759&srs=EPSG%3A21420&styles=&format=application/openlayers",
-    ],
-    tileSize: 256,
-  });
-  map.addLayer(
-    {
-      id: "wms-layer",
-      type: "raster",
-      source: "wms-source",
-      paint: {
-        "raster-opacity": 0.3,
-      },
+//----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
+var topiclayer = new ol.layer.Image({
+  title: "land84",
+  source: new ol.source.ImageWMS({
+    ratio: 1,
+    url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
+    // 请求参数
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.1.1",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: true,
+      tiled: true,
+      LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
+      exceptions: "application/vnd.ogc.se_inimage",
+      singleTile: true, //单瓦片，渲染成一张图片
     },
-    "aeroway-line"
-  );
+  }),
+});
 
-  map.addSource("places", {
-    // This GeoJSON contains features that include an "icon"
-    // property. The value of the "icon" property corresponds
-    // to an image in the Mapbox Streets style's sprite.
-    type: "geojson",
-    data: {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "theatre-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.2, 30.2],
-          },
-        },
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "bar-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.2, 30.1],
-          },
-        },
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "art-gallery-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.3, 30.3],
-          },
-        },
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "bicycle-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.3, 30.4],
-          },
-        },
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "rocket-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.3, 30.5],
-          },
-        },
-        {
-          type: "Feature",
-          properties: {
-            description:
-              '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-            icon: "music-15",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [120.4, 30.2],
-          },
-        },
-      ],
-    },
-  });
-  // Add a layer showing the places.
-  map.addLayer({
-    id: "places",
-    type: "symbol",
-    source: "places",
-    layout: {
-      "icon-image": "{icon}",
-      "icon-allow-overlap": true,
-    },
-  });
+// 加载mapbox底图和geoserver发布的WTMS底图
+var layers = [
+  new ol.layer.Tile({
+    title: "satellite",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "light",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "dark",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "streets",
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+      //https://api.mapbox.com/styles/v1/{my_username}/{my_style_id}/tiles/256/{z}/{x}/{y}?access_token={my_access_token}
+      //url: "http://rt{0-3}.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0",
+    }),
+  }),
+  new ol.layer.Tile({
+    title: "outdoors",
+    visible: false,
+    source: new ol.source.XYZ({
+      url: "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
+    }),
+  }),
+  topiclayer,
+];
 
-  // When a click event occurs on a feature in the places layer, open a popup at the
-  // location of the feature, with description HTML from its properties.
-  map.on("click", "places", (e) => {
-    // Copy coordinates array.
-    const coordinates = e.features[0].geometry.coordinates.slice();
-    const description = e.features[0].properties.description;
+//地图
+var map = new ol.Map({
+  target: "map", //指向div
+  layers: layers,
+  view: view,
+});
 
-    // Ensure that if the map is zoomed out such that multiple
-    // copies of the feature are visible, the popup appears
-    // over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+//切换底图
+function openMenu() {
+  console.log("ok");
+  const layerList = document.getElementById("menu");
+  layerList.style.display = "inline";
+  layerList.addEventListener("click", (event) => {
+    if (event.target.checked) {
+      // 如果选中某一复选框
+      // 通过DOM元素的id值来判断应该对哪个图层进行显示
+      for (ie = 0; ie < 5; ie++) {
+        map.getLayers().item(ie).setVisible(false);
+      }
+      switch (event.target.id) {
+        case "satellite-v9":
+          map.getLayers().item(0).setVisible(true);
+          break;
+        case "light-v10":
+          map.getLayers().item(1).setVisible(true);
+          break;
+        case "dark-v10":
+          map.getLayers().item(2).setVisible(true);
+          break;
+        case "streets-v11":
+          map.getLayers().item(3).setVisible(true);
+          break;
+        case "outdoors-v11":
+          map.getLayers().item(4).setVisible(true);
+          break;
+        default:
+          break;
+      }
+      map.getLayers().item(5).setVisible(true);
     }
-
-    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
   });
+}
 
-  // Change the cursor to a pointer when the mouse is over the places layer.
-  map.on("mouseenter", "places", () => {
-    map.getCanvas().style.cursor = "pointer";
-  });
+//地图点击事件
+//线上线下访问url不同，可变配置提出
+var baseurl = "http://localhost:8080/";
+$("#map").click(function (e) {
+  //获取地图上点击的地理坐标，平面墨卡托坐标系
+  var t3857 = map.getEventCoordinate(e.originalEvent);
+  console.log(t3857);
+  t4326 = ol.proj.transform(t3857, "EPSG:3857", "EPSG:4326");
+  console.log(t4326);
+  // BBOX,minlng,minlat,maxlng,maxlat,平面墨卡托就是minx,miny,maxx,maxy，下面的url3857里的bbox是一个2m×2m的小矩形
+  //构造请求url的时候，把坐标系写成3857，虽然后台数据是4326坐标系的，但geoserver能内部转换
+  var url3857 =
+    baseurl +
+    "geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=cite%3Aland84&LAYERS=cite%3Aland84&exceptions=application%2Fvnd.ogc.se_inimage&INFO_FORMAT=application/json&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A3857&STYLES=&WIDTH=101&HEIGHT=101&BBOX=" +
+    (t3857[0] - 1).toString() +
+    "%2C" +
+    (t3857[1] - 1).toString() +
+    "%2C" +
+    (t3857[0] + 1).toString() +
+    "%2C" +
+    (t3857[1] + 1).toString();
+  console.log(url3857);
+  $.ajax({
+    url: url3857,
+    type: "GET",
+    dataType: "json",
+    headers: { "Content-Type": "application/json;charset=utf8" },
+    success: function (data) {
+      //这个方法直接把geojson转为feature数组
+      features = new ol.format.GeoJSON().readFeatures(data);
+      //新建矢量资源
+      var vectorSource = new ol.source.Vector({
+        features: features,
+      });
+      //新建矢量图层
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: polygonStyleFunction,
+      });
+      //将矢量图层添加到map
+      map.addLayer(vectorLayer);
+      //更新属性表
+      for (var i = 0; i < data["features"].length; i++) {
+        var properties = data["features"][i]["properties"];
+        var idHD = properties["id_0"];
+        var categoryHD = properties["les-miserables_category"];
+        var nameHD = properties["les-miserables_name"];
+        var valueHD = properties["nles-miserables_value"];
 
-  // Change it back to a pointer when it leaves.
-  map.on("mouseleave", "places", () => {
-    map.getCanvas().style.cursor = "";
+        var tabletxt = "<tr><td>" + idHD + "</td><td>";
+        categoryHD +
+          "</td><td>" +
+          nameHD +
+          "</td><td>" +
+          valueHD +
+          "</td></tr>";
+        $("#attributetbody").append(tabletxt);
+      }
+    },
+    error: function (data) {
+      console.log("faile");
+      console.log(data);
+    },
   });
 });
-
-//-----------add map controls----------------------
-var nav = new mapboxgl.NavigationControl();
-map.addControl(nav, "top-left");
-var geolocate = new mapboxgl.GeolocateControl({
-  positionOptions: {
-    enableHighAccuracy: true,
-  },
-  trackUserLocation: true,
-});
-map.addControl(geolocate);
-
-var scale = new mapboxgl.ScaleControl({
-  maxWidth: 80,
-  unit: "metric", //meter
-});
-map.addControl(scale);
-
-var fullScreen = new mapboxgl.FullscreenControl();
-map.addControl(fullScreen);
-//-----------add map controls----------------------
+//制图风格，标注内容要从要素中获取，每个要素的name_ch属性不同，所以制图风格是方法，而不是静态的
+function polygonStyleFunction(feature) {
+  return new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: "rgba(192, 0, 0, 1)",
+      width: 2,
+    }),
+    fill: new ol.style.Fill({
+      color: "rgba(192, 192, 192, 0.5)",
+    }),
+    text: createTextStyle(feature),
+  });
+}
+//创建注记
+function createTextStyle(feature) {
+  return new ol.style.Text({
+    font: "20px Microsoft YaHei",
+    text: getText(feature),
+    fill: new ol.style.Fill({
+      color: "rgba(192, 0, 0, 1)",
+    }),
+    stroke: new ol.style.Stroke({ color: "rgba(255, 255, 255, 1)", width: 1 }),
+  });
+}
+//获取要素属性内容
+function getText(feature) {
+  return feature.get("les-miserables_name").toString();
+}
 
 $(function () {
   $("#btn2").click(function () {
@@ -200,15 +239,10 @@ $(function () {
   });
 });
 
-function openMenu() {
-  console.log("ok");
-  const layerList = document.getElementById("menu");
-  const inputs = layerList.getElementsByTagName("input");
-  layerList.style.display = "inline";
-  for (const input of inputs) {
-    input.onclick = (layer) => {
-      const layerId = layer.target.id;
-      map.setStyle("mapbox://styles/mapbox/" + layerId);
-    };
-  }
-}
+//=============这个页面可以等一等慢点做
+
+//TODO 加入全局的查询，获取到相关的数据，并以结果列表的形式显示出来
+
+//TODO 这个里面要有点击数据，弹出标签，然后里面引导出内容这一部分
+
+//TODO 针对加入的一些属性和内容，涉及统计分析的可视化方式
