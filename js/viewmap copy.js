@@ -6,27 +6,6 @@ var view = new ol.View({
   zoom: 11,
 });
 
-//----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
-var topiclayer = new ol.layer.Image({
-  title: "land84",
-  source: new ol.source.ImageWMS({
-    ratio: 1,
-    url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
-    // 请求参数
-    params: {
-      SERVICE: "WMS",
-      VERSION: "1.1.1",
-      REQUEST: "GetMap",
-      FORMAT: "image/png",
-      TRANSPARENT: true,
-      tiled: true,
-      LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
-      exceptions: "application/vnd.ogc.se_inimage",
-      singleTile: true, //单瓦片，渲染成一张图片
-    },
-  }),
-});
-
 // 加载mapbox底图和geoserver发布的WTMS底图
 var layers = [
   new ol.layer.Tile({
@@ -65,7 +44,6 @@ var layers = [
       url: "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
     }),
   }),
-  topiclayer,
 ];
 
 //地图
@@ -106,11 +84,33 @@ function openMenu() {
         default:
           break;
       }
-      map.getLayers().item(5).setVisible(true);
+      // map.getLayers().item(5).setVisible(true);
     }
   });
 }
 
+var wfsVectorLayer = null;
+var layerChosed = null;
+function GetData(a) {
+  wfsVectorLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      format: new ol.format.GeoJSON({
+        geometryName: "the_geom",
+      }),
+      url:
+        "http://localhost:8080/geoserver/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=cite:" +
+        a +
+        "&outputFormat=application/json&srsname=EPSG:4326",
+    }),
+  });
+}
+
+function LoadDat() {
+  GetData(layerChosed);
+  map.addLayer(wfsVectorLayer);
+}
+
+function LoadSLD() {}
 //地图点击事件
 //线上线下访问url不同，可变配置提出
 var baseurl = "http://localhost:8080/";
@@ -228,7 +228,30 @@ $(function () {
   $("#myModal,#myModal1,#myModal2").on("show.bs.modal", function () {
     console.log("调用show执行1");
   });
-  $("#myModal,#myModal1,#myModal2").on("shown.bs.modal", function () {
+  $("#myModal").on("shown.bs.modal", function () {
+    //console.log("展示之后执行2");
+    var chosed = document.getElementById("SpecChosed");
+    //  chosed.style.display = "inline";
+    chosed.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        layerChosed = event.target.id;
+      }
+      //event.target.id就对应了选中项的ID号，也就是数据在数据库里面对应的名称
+    });
+    console.log(layerChosed);
+  });
+  $("#myModal1").on("show.bs.modal", function () {
+    var chosed = document.getElementById("BaseChosed");
+    //  chosed.style.display = "inline";
+    chosed.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        layerChosed = event.target.id;
+      }
+      //event.target.id就对应了选中项的ID号，也就是数据在数据库里面对应的名称
+    });
+    console.log(layerChosed);
+  });
+  $("#myModal2").on("show.bs.modal", function () {
     console.log("展示之后执行2");
   });
   $("#myModal,#myModal1,#myModal2").on("hide.bs.modal", function () {
@@ -238,8 +261,6 @@ $(function () {
     console.log("完全隐藏之后执行2");
   });
 });
-
-//TODO 首先是实现，选择数据，然后加载到地图上
 
 //TODO 然后实现点击数据，可以显示其属性的那种标注性质的
 

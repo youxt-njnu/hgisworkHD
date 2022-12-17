@@ -185,22 +185,33 @@
                 <h4 class="modal-title">基础数据选择</h4>
               </div>
               <!--中心内容-->
-              <form action="#">
-                ddd
-                <!--脚注-->
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" id="btn11">
-                    确定
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                  >
-                    取消
-                  </button>
-                </div>
-              </form>
+              <!-- 复选 -->
+              <div id="BaseChosed">
+                <input type="radio" id="basecounty" name="basechosed" />
+                <label for="BorderData"> 成都市部分县级面数据</label>
+                <br />
+                <input type="radio" id="road84" name="basechosed" />
+                <label for="RoadData"> 成都市部分路网数据</label>
+                <br />
+              </div>
+              <!--脚注-->
+              <div class="modal-footer">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="btn11"
+                  onclick="LoadDat()"
+                >
+                  确定
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
+                >
+                  取消
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -217,143 +228,29 @@
                 <h4 class="modal-title">专题数据选择</h4>
               </div>
               <!--中心内容-->
-              <form action="#">
-                <div
-                  class="panel-group"
-                  id="accordion"
-                  role="tablist"
-                  aria-multiselectable="true"
+              <!-- 复选 -->
+              <div id="SpecChosed">
+                <input type="radio" id="land84" name="specchosed" />
+                <label for="landData"> 成都市部分土地利用数据</label>
+                <br />
+                <input type="radio" id="poi84" name="specchosed" />
+                <label for="POIData"> 成都市部分POI数据</label>
+                <br />
+              </div>
+
+              <!--脚注-->
+              <div class="modal-footer">
+                <button class="btn btn-primary" id="btn0" onclick="LoadDat()">
+                  确定
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-dismiss="modal"
                 >
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                      <h4 class="panel-title">
-                        <a
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseOne"
-                          aria-expanded="true"
-                          aria-controls="collapseOne"
-                        >
-                          按地区分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseOne"
-                      class="panel-collapse collapse in"
-                      role="tabpanel"
-                      aria-labelledby="headingOne"
-                    >
-                      <div class="panel-body">
-                        <a href="#">直隶省</a>|<a href="#">山西省</a>|<a
-                          href="#"
-                          >山东省</a
-                        >|<a href="#">河南省</a>|<a href="#">江苏省 安徽省</a
-                        >|<a href="#">浙江省</a>|<a href="#">江西省</a>|<a
-                          href="#"
-                          >福建省</a
-                        >|<a href="#">广东省</a>|<a href="#">广西省</a>|<a
-                          href="#"
-                          >湖南省</a
-                        >|<a href="#">湖北省</a>|<a href="#">云南省 贵州省</a
-                        >|<a href="#">四川省</a>|<a href="#">陕西省</a>|<a
-                          href="#"
-                          >甘肃省</a
-                        >|<a href="#">吉林省</a>|<a href="#">黑龙江省</a>|<a
-                          href="#"
-                          >乌苏雅里台将军辖区</a
-                        >|<a href="#">驻藏办事大臣辖区</a>|<a href="#"
-                          >内札萨克蒙古地方</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                      <h4 class="panel-title">
-                        <a
-                          class="collapsed"
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseTwo"
-                          aria-expanded="false"
-                          aria-controls="collapseTwo"
-                        >
-                          按专题分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseTwo"
-                      class="panel-collapse collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingTwo"
-                    >
-                      <div class="panel-body">
-                        <a href="#">文化传播</a>|<a href="#">交通商贸</a>|<a
-                          href="#"
-                          >土地利用</a
-                        >|<a href="#">城址聚落</a>|<a href="#">考古遗址 </a>|<a
-                          href="#"
-                          >民族宗教</a
-                        >|<a href="#">生态环境</a>|<a href="#">文献资料</a>|<a
-                          href="#"
-                          >传统制造</a
-                        >|<a href="#">内外战争</a>|<a href="#">社会变革</a>|<a
-                          href="#"
-                          >人民运动</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                      <h4 class="panel-title">
-                        <a
-                          class="collapsed"
-                          role="button"
-                          data-toggle="collapse"
-                          data-parent="#accordion"
-                          href="#collapseThree"
-                          aria-expanded="false"
-                          aria-controls="collapseThree"
-                        >
-                          按时间段分类
-                        </a>
-                      </h4>
-                    </div>
-                    <div
-                      id="collapseThree"
-                      class="panel-collapse collapse"
-                      role="tabpanel"
-                      aria-labelledby="headingThree"
-                    >
-                      <div class="panel-body">
-                        <a href="#">1550-1600</a> | <a href="#">1601-1650</a> |
-                        <a href="#">1651-1700</a> | <a href="#">1701-1750</a> |
-                        <a href="#">1751-1800</a> | <a href="#">1801-1850</a> |
-                        <a href="#">1851-1900</a> |
-                        <a href="#">1900-1950</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--脚注-->
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" id="btn0">
-                    确定
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                  >
-                    取消
-                  </button>
-                </div>
-              </form>
+                  取消
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -401,7 +298,12 @@
                 </div>
                 <!--脚注-->
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" id="btn22">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="btn22"
+                    onclick="LoadSLD()"
+                  >
                     确定
                   </button>
                   <button
