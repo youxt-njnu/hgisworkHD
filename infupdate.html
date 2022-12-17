@@ -148,7 +148,7 @@
               data-toggle="dropdown"
               id="dropmenuData"
             >
-              基础数据 <span class="caret"></span>
+              数据选择 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
               <li class="dropdown-header">基础数据</li>
@@ -179,33 +179,24 @@
         </div>
         <div class="col-sm-9">
           <div class="button-group">
-            <button class="btnupdate" onclick="Clear()">清空</button>
-            <button class="btnupdate">新增</button>
-            <button class="btnupdate">修改</button>
-            <button class="btnupdate">删除</button>
-            <button class="btnupdate">关联</button>
+            <button class="btnupdate" id="QueDa" onclick="QueD()">查询</button>
+            <button class="btnupdate" id="AddDa" onclick="AddD()">新增</button>
+            <button class="btnupdate" id="ModifyDa" onclick="ModifyD()">
+              修改
+            </button>
+            <button class="btnupdate" id="DeleteDa" onclick="DeleteD()">
+              删除
+            </button>
+            <button class="btnupdate" id="RelatedDa" onclick="RelatedD()">
+              关联
+            </button>
+            <button class="btnupdate" id="ClearDa" onclick="Clear()">
+              提交
+            </button>
           </div>
         </div>
       </div>
       <div class="row" style="height: 300px">
-        <!-- <table class="table table-bordered text-center table_box" id="infTable">
-          <tr id="attributethead"></tr>
-          <tbody id="attributetbody"></tbody>
-        </table> -->
-        <!-- <div class="table_box_big">
-          <div class="table_box">
-            <table>
-              <thead>
-                <tr id="attributethead"></tr>
-              </thead>
-            </table>
-          </div>
-          <div class="table_tbody_box">
-            <table>
-              <tbody id="attributetbody"></tbody>
-            </table>
-          </div>
-        </div> -->
         <div class="table_box">
           <table>
             <thead>
@@ -244,6 +235,6 @@
     </div>
     <!-- footer结束 -->
     <script src="js/infupdate.js"></script>
-    <script src="js/viewmap copy.js"></script>
+    <!-- <script src="js/viewmap copy.js"></script> -->
   </body>
 </html>

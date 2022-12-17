@@ -224,9 +224,9 @@ window.addEventListener("resize", chartGraph.resize);
 //==========================mapH
 var view = new ol.View({
   // 设置中心点坐标，因为加载的腾讯瓦片地图的坐标系是墨卡托投影坐标系（'EPSG:3857'），所以要对经纬度坐标点进行投影，ol.proj.transform既是openlayer自带的坐标系转换函数，支持WGS84和墨卡托投影的互换。
-  center: ol.proj.transform([104, 30.6], "EPSG:4326", "EPSG:3857"),
+  center: ol.proj.transform([104.08, 30.68], "EPSG:4326", "EPSG:3857"),
   // 比例尺级数为9
-  zoom: 11,
+  zoom: 13,
 });
 
 //----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。

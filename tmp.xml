@@ -1,0 +1,31 @@
+<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+<Insert>
+<cite:land84 xmlns:cite="http://localhost:8080/geoserver/cite" fid="a">
+<cite:geometry>
+<Polygon xmlns="http://www.opengis.net/gml" srsName="EPSG:4326">
+<exterior>
+<LinearRing srsName="EPSG:4326">
+<posList srsDimension="2">103.90478516847362 30.67459411621094 103.99267579347362 30.653994750976565 103.94232180353721 30.742800889350477 103.90478516847362 30.67459411621094</posList>
+</LinearRing>
+</exterior>
+</Polygon>
+</cite:geometry>
+
+<cite:id_0>a</cite:id_0>
+<cite:Lon>s</cite:Lon>
+<cite:Lat>d</cite:Lat>
+<cite:F_AREA>f</cite:F_AREA>
+<cite:City_CODE>g</cite:City_CODE>
+<cite:UUID>h</cite:UUID
+<cite:Level1>j</cite:Level1>
+<cite:Level2>k</cite:Level2>
+<cite:id>l</cite:id>
+<cite:les-miserables_name>m</cite:les-miserables_name>
+<cite:les-miserables_symbolSize>n</cite:les-miserables_symbolSize>
+<cite:les-miserables_x>b</cite:les-miserables_x>
+<cite:les-miserables_y>v</cite:les-miserables_y>
+<cite:les-miserables_value>c</cite:les-miserables_value>
+<cite:les-miserables_category>x</cite:les-miserables_category>
+</cite:land84>
+</Insert>
+</Transaction>
