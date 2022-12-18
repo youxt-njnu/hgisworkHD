@@ -54,43 +54,50 @@ var map = new ol.Map({
 });
 
 //切换底图
+let layerList = document.getElementById("menu");
+layerList.addEventListener("click", (event) => {
+  if (event.target.checked) {
+    // 如果选中某一复选框
+    // 通过DOM元素的id值来判断应该对哪个图层进行显示
+    for (ie = 0; ie < 5; ie++) {
+      map.getLayers().item(ie).setVisible(false);
+    }
+    switch (event.target.id) {
+      case "satellite-v9":
+        map.getLayers().item(0).setVisible(true);
+        break;
+      case "light-v10":
+        map.getLayers().item(1).setVisible(true);
+        break;
+      case "dark-v10":
+        map.getLayers().item(2).setVisible(true);
+        break;
+      case "streets-v11":
+        map.getLayers().item(3).setVisible(true);
+        break;
+      case "outdoors-v11":
+        map.getLayers().item(4).setVisible(true);
+        break;
+      default:
+        break;
+    }
+    // map.getLayers().item(5).setVisible(true);
+  }
+});
+
 function openMenu() {
   console.log("ok");
-  const layerList = document.getElementById("menu");
-  layerList.style.display = "inline";
-  layerList.addEventListener("click", (event) => {
-    if (event.target.checked) {
-      // 如果选中某一复选框
-      // 通过DOM元素的id值来判断应该对哪个图层进行显示
-      for (ie = 0; ie < 5; ie++) {
-        map.getLayers().item(ie).setVisible(false);
-      }
-      switch (event.target.id) {
-        case "satellite-v9":
-          map.getLayers().item(0).setVisible(true);
-          break;
-        case "light-v10":
-          map.getLayers().item(1).setVisible(true);
-          break;
-        case "dark-v10":
-          map.getLayers().item(2).setVisible(true);
-          break;
-        case "streets-v11":
-          map.getLayers().item(3).setVisible(true);
-          break;
-        case "outdoors-v11":
-          map.getLayers().item(4).setVisible(true);
-          break;
-        default:
-          break;
-      }
-      // map.getLayers().item(5).setVisible(true);
-    }
-  });
+  var tmp = document.getElementById("plane");
+  if (tmp.style.display == "block") {
+    tmp.style.display = "none";
+  } else {
+    tmp.style.display = "block";
+  }
 }
 
 var wfsVectorLayer = null;
 var layerChosed = null;
+var existData = [];
 function GetData(a) {
   wfsVectorLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -107,10 +114,10 @@ function GetData(a) {
 
 function LoadDat() {
   GetData(layerChosed);
+  existData.push(layerChosed);
   map.addLayer(wfsVectorLayer);
 }
 
-function LoadSLD() {}
 //地图点击事件
 //线上线下访问url不同，可变配置提出
 var baseurl = "http://localhost:8080/";
@@ -188,6 +195,104 @@ function getText(feature) {
   return feature.get("les-miserables_name").toString();
 }
 
+var Trefer = {
+  basecounty: "成都市部分县级面数据",
+  road84: "成都市部分路网数据",
+  land84: "成都市部分土地利用数据",
+  poi84: "成都市部分POI数据",
+};
+
+var referT = {
+  成都市部分县级面数据: "basecounty",
+  成都市部分路网数据: "road84",
+  成都市部分土地利用数据: "land84",
+  成都市部分POI数据: "poi84",
+};
+
+function CustomedStyle() {
+  var btnDat = document.getElementById("MenuChosed");
+  if (btnDat.innerHTML != "") {
+    return;
+  }
+  var inf = '<li><a href="#" onclick="viewDataAttri($(this).text())">';
+  for (var i = 0; i < existData.length - 1; i++) {
+    inf =
+      inf +
+      Trefer[existData[i]] +
+      '</a></li><li><a href="#" onclick="viewDataAttri($(this).text())">';
+  }
+  inf = inf + Trefer[existData[existData.length - 1]] + "</a></li>";
+  $("#MenuChosed").append(inf);
+}
+
+function viewDataAttri(a) {
+  //显示选中的图层的文本信息
+  var btnDat = document.getElementById("btnCustom");
+  btnDat.innerHTML = a + '&nbsp;<span class="caret">';
+  GetData(referT[a]);
+  map.removeLayer(wfsVectorLayer);
+  setStyles();
+  map.addLayer(wfsVectorLayer);
+}
+
+var setStyles = function () {
+  wfsVectorLayer.setStyle(
+    new ol.style.Style({
+      stroke: strokeStyle(),
+      fill: fillStyle(),
+      image: new ol.style.Circle({
+        fill: fillStyle(),
+        stroke: strokeStyle(),
+        radius: 8,
+      }),
+    })
+  );
+};
+
+$("#js-stroke-width").slider({
+  min: 1,
+  max: 10,
+  step: 1,
+  value: 1,
+  slide: function (event, ui) {
+    $("#js-stroke-width-value").text(ui.value);
+    setStyles();
+  },
+});
+
+$("#js-fill-opacity").slider({
+  min: 0,
+  max: 100,
+  step: 1,
+  value: 50,
+  slide: function (event, ui) {
+    $("#js-fill-opacity-value").text(ui.value + "%");
+    setStyles();
+  },
+});
+
+$("#js-stroke-colour, #js-fill-colour").spectrum({
+  color: "black",
+  change: setStyles,
+});
+
+$("#js-stroke-style").on("change", setStyles);
+
+var fillStyle = function () {
+  var rgb = $("#js-fill-colour").spectrum("get").toRgb();
+  return new ol.style.Fill({
+    color: [rgb.r, rgb.g, rgb.b, $("#js-fill-opacity").slider("value") / 100],
+  });
+};
+
+var strokeStyle = function () {
+  return new ol.style.Stroke({
+    color: $("#js-stroke-colour").spectrum("get").toHexString(),
+    width: $("#js-stroke-width").slider("value"),
+    lineDash: $("#js-stroke-style").val() === "solid" ? undefined : [8],
+  });
+};
+
 //模态框的操作相应
 $(function () {
   $("#btn").click(function () {
@@ -263,5 +368,3 @@ $(function () {
 });
 
 //TODO 然后实现点击数据，可以显示其属性的那种标注性质的
-
-//TODO 然后思考怎么获取到本地的SLD文件，进行个性符号化设置

@@ -8,9 +8,9 @@ body {
 
 #map {
   position: absolute;
-  top: 20%;
+  top: 18%;
   left: 0;
-  /* margin-top: 10%; */
+  margin-top: 13px;
   /* margin-left: 0; */
   width: 100%;
   height: 100%;
@@ -25,12 +25,14 @@ body {
   padding: 10px;
 }
 
-#btn1,#btn2,#btn {
+#btn1,
+#btn2,
+#btn {
   width: 209px;
   background-color: #b1191a;
   border: 5px;
-	font-size: 16px;
-	color: #fff;
+  font-size: 16px;
+  color: #fff;
 }
 .map-overlay {
   font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -65,9 +67,62 @@ body {
 #menu {
   position: absolute;
   background: #efefef;
-  display: none;
-  right: 5%;
-  bottom: 5%;
+  display: inline;
+  right: 2%;
+  bottom: 2%;
   /* padding: 10px; */
-  font-family: 'Open Sans', sans-serif;
-  }
+  font-family: "Open Sans", sans-serif;
+}
+
+#plane {
+  position: absolute;
+  display: none;
+  margin-left: 61px;
+  margin-top: 10%;
+  width: 209px;
+  background: rgba(248, 248, 255, 0.623);
+  box-sizing: border-box;
+  padding: 14px 20px 0 20px;
+  font-family: Arial, sans-serif;
+}
+
+.ol-attribution > ul {
+  font-size: 12px;
+}
+
+.label-wrap {
+  padding: 10px 10px 0 10px;
+  float: right;
+}
+
+.sp-replacer {
+  border-color: #ddd;
+}
+
+.panel-heading {
+  position: relative;
+  padding: 6px 12px;
+}
+
+.panel-heading .label {
+  position: absolute;
+  right: 10px;
+  top: 4px;
+}
+
+.panel-body {
+  padding: 3px;
+}
+.panel-title {
+  font-size: 12px;
+}
+
+.form-control {
+  height: 26px;
+  padding: 4px 12px;
+  font-size: 10px;
+}
+
+.panel {
+  margin-bottom: 10px;
+}
