@@ -50,7 +50,11 @@
       </div>
       <!-- user -->
       <div class="user">
-        <img src="img/user.jpg" alt="" style="vertical-align: middle" />
+        <img
+          src="img/user.png"
+          alt=""
+          style="vertical-align: middle; height: 40px"
+        />
         YXT
       </div>
       <!-- colworker -->
@@ -59,52 +63,6 @@
         <i class="count">3</i>
       </div>
     </div>
-    <!-- Button trigger modal -->
-    <!-- <button
-                            type="button"
-                            class="btn btn-primary btn-lg"
-                            data-toggle="modal"
-                            data-target="#LoginTop"
-                          >
-                            登录|注册
-                          </button>
-          
-                          <div
-                            class="modal fade"
-                            id="LoginTop"
-                            tabindex="-1"
-                            role="dialog"
-                            aria-labelledby="myModalLabel"
-                          >
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <button
-                                    type="button"
-                                    class="close"
-                                    data-dismiss="modal"
-                                    aria-label="Close"
-                                  >
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                  <h4 class="modal-title" id="myModalLabel">登录</h4>
-                                </div>
-                                <div class="modal-body">...</div>
-                                <div class="modal-footer">
-                                  <button
-                                    type="button"
-                                    class="btn btn-default"
-                                    data-dismiss="modal"
-                                  >
-                                    关闭
-                                  </button>
-                                  <button type="button" class="btn btn-primary">
-                                    登录|注册
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div> -->
     <!-- header结束 -->
 
     <!-- nav制作 -->
@@ -142,12 +100,6 @@
       <!-- 地图 -->
       <div id="map"></div>
       <!-- 底图切换开始 -->
-      <div class="map-overlay top">
-        <div class="map-overlay-inner" onclick="openMenu()">
-          <span style="font-size: 24px; cursor: pointer">&#9776;</span>
-        </div>
-      </div>
-
       <div id="menu">
         <input
           id="satellite-v9"
@@ -172,8 +124,17 @@
 
       <!-- 数据选择按钮组开始 -->
       <div class="searchinleft">
-        <input type="text" class="text" value="请搜索内容..." />
-        <button id="btn-search">搜索</button>
+        <!-- <input type="text" class="text" value="请搜索内容..." />
+        <button id="btn-search">搜索</button> -->
+        <label for="js-search-query" style="margin-bottom: -5px"
+          >数据搜索</label
+        >
+        <input
+          id="js-search-query"
+          type="search"
+          class="form-control"
+          placeholder="输入搜索信息..."
+        />
       </div>
 
       <div class="button-group">
@@ -188,8 +149,9 @@
                 href="#collapseOne"
                 aria-expanded="true"
                 aria-controls="collapseOne"
+                style="font-size: 16px"
               >
-                结果列表
+                搜索结果
               </a>
             </h4>
           </div>
@@ -264,6 +226,6 @@
       </div>
       <!-- 数据选择按钮组结束 -->
     </div>
-    <script src="js/viewmap.js"></script>
+    <script src="js/analysis.js"></script>
   </body>
 </html>

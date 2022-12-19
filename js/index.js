@@ -1,5 +1,4 @@
-//TODO 思考实现点击数据分类里的，跳转到地图展示或者是查询统计，根据后面的实现来调整
-
-//TODO 的协作成员部分，构建一个模态框响应。
-
-//TODO 建立一个登录的界面
+function SetData(a) {
+  //显示选中的图层的文本信息
+  window.open("analysis.html?data=" + a);
+}

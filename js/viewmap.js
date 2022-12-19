@@ -1,36 +1,9 @@
-// properties: {
-//   description:
-//     '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-//   icon: "theatre-15",
-// }
-
 //页面
 var view = new ol.View({
   // 设置中心点坐标，因为加载的腾讯瓦片地图的坐标系是墨卡托投影坐标系（'EPSG:3857'），所以要对经纬度坐标点进行投影，ol.proj.transform既是openlayer自带的坐标系转换函数，支持WGS84和墨卡托投影的互换。
   center: ol.proj.transform([104, 30.6], "EPSG:4326", "EPSG:3857"),
   // 比例尺级数为9
   zoom: 11,
-});
-
-//----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
-var topiclayer = new ol.layer.Image({
-  title: "land84",
-  source: new ol.source.ImageWMS({
-    ratio: 1,
-    url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
-    // 请求参数
-    params: {
-      SERVICE: "WMS",
-      VERSION: "1.1.1",
-      REQUEST: "GetMap",
-      FORMAT: "image/png",
-      TRANSPARENT: true,
-      tiled: true,
-      LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
-      exceptions: "application/vnd.ogc.se_inimage",
-      singleTile: true, //单瓦片，渲染成一张图片
-    },
-  }),
 });
 
 // 加载mapbox底图和geoserver发布的WTMS底图
@@ -71,7 +44,6 @@ var layers = [
       url: "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
     }),
   }),
-  topiclayer,
 ];
 
 //地图
@@ -82,39 +54,68 @@ var map = new ol.Map({
 });
 
 //切换底图
+let layerList = document.getElementById("menu");
+layerList.addEventListener("click", (event) => {
+  if (event.target.checked) {
+    // 如果选中某一复选框
+    // 通过DOM元素的id值来判断应该对哪个图层进行显示
+    for (ie = 0; ie < 5; ie++) {
+      map.getLayers().item(ie).setVisible(false);
+    }
+    switch (event.target.id) {
+      case "satellite-v9":
+        map.getLayers().item(0).setVisible(true);
+        break;
+      case "light-v10":
+        map.getLayers().item(1).setVisible(true);
+        break;
+      case "dark-v10":
+        map.getLayers().item(2).setVisible(true);
+        break;
+      case "streets-v11":
+        map.getLayers().item(3).setVisible(true);
+        break;
+      case "outdoors-v11":
+        map.getLayers().item(4).setVisible(true);
+        break;
+      default:
+        break;
+    }
+    // map.getLayers().item(5).setVisible(true);
+  }
+});
+
 function openMenu() {
   console.log("ok");
-  const layerList = document.getElementById("menu");
-  layerList.style.display = "inline";
-  layerList.addEventListener("click", (event) => {
-    if (event.target.checked) {
-      // 如果选中某一复选框
-      // 通过DOM元素的id值来判断应该对哪个图层进行显示
-      for (ie = 0; ie < 5; ie++) {
-        map.getLayers().item(ie).setVisible(false);
-      }
-      switch (event.target.id) {
-        case "satellite-v9":
-          map.getLayers().item(0).setVisible(true);
-          break;
-        case "light-v10":
-          map.getLayers().item(1).setVisible(true);
-          break;
-        case "dark-v10":
-          map.getLayers().item(2).setVisible(true);
-          break;
-        case "streets-v11":
-          map.getLayers().item(3).setVisible(true);
-          break;
-        case "outdoors-v11":
-          map.getLayers().item(4).setVisible(true);
-          break;
-        default:
-          break;
-      }
-      map.getLayers().item(5).setVisible(true);
-    }
+  var tmp = document.getElementById("plane");
+  if (tmp.style.display == "block") {
+    tmp.style.display = "none";
+  } else {
+    tmp.style.display = "block";
+  }
+}
+
+var wfsVectorLayer = null;
+var layerChosed = null;
+var existData = [];
+function GetData(a) {
+  wfsVectorLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      format: new ol.format.GeoJSON({
+        geometryName: "the_geom",
+      }),
+      url:
+        "http://localhost:8080/geoserver/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=cite:" +
+        a +
+        "&outputFormat=application/json&srsname=EPSG:4326",
+    }),
   });
+}
+
+function LoadDat() {
+  GetData(layerChosed);
+  existData.push(layerChosed);
+  map.addLayer(wfsVectorLayer);
 }
 
 //地图点击事件
@@ -158,23 +159,6 @@ $("#map").click(function (e) {
       });
       //将矢量图层添加到map
       map.addLayer(vectorLayer);
-      //更新属性表
-      for (var i = 0; i < data["features"].length; i++) {
-        var properties = data["features"][i]["properties"];
-        var idHD = properties["id_0"];
-        var categoryHD = properties["les-miserables_category"];
-        var nameHD = properties["les-miserables_name"];
-        var valueHD = properties["nles-miserables_value"];
-
-        var tabletxt = "<tr><td>" + idHD + "</td><td>";
-        categoryHD +
-          "</td><td>" +
-          nameHD +
-          "</td><td>" +
-          valueHD +
-          "</td></tr>";
-        $("#attributetbody").append(tabletxt);
-      }
     },
     error: function (data) {
       console.log("faile");
@@ -211,7 +195,127 @@ function getText(feature) {
   return feature.get("les-miserables_name").toString();
 }
 
+var Trefer = {
+  basecounty: "成都市部分县级面数据",
+  road84: "成都市部分路网数据",
+  land84: "成都市部分土地利用数据",
+  poi84: "成都市部分POI数据",
+};
+
+var referT = {
+  成都市部分县级面数据: "basecounty",
+  成都市部分路网数据: "road84",
+  成都市部分土地利用数据: "land84",
+  成都市部分POI数据: "poi84",
+};
+
+function CustomedStyle() {
+  var btnDat = document.getElementById("MenuChosed");
+  if (btnDat.innerHTML != "") {
+    return;
+  }
+  var inf = '<li><a href="#" onclick="viewDataAttri($(this).text())">';
+  for (var i = 0; i < existData.length - 1; i++) {
+    inf =
+      inf +
+      Trefer[existData[i]] +
+      '</a></li><li><a href="#" onclick="viewDataAttri($(this).text())">';
+  }
+  inf = inf + Trefer[existData[existData.length - 1]] + "</a></li>";
+  $("#MenuChosed").append(inf);
+}
+
+function viewDataAttri(a) {
+  //显示选中的图层的文本信息
+  var btnDat = document.getElementById("btnCustom");
+  btnDat.innerHTML = a + '&nbsp;<span class="caret">';
+  GetData(referT[a]);
+  map.removeLayer(wfsVectorLayer);
+  setStyles();
+  map.addLayer(wfsVectorLayer);
+}
+
+var setStyles = function () {
+  wfsVectorLayer.setStyle(
+    new ol.style.Style({
+      stroke: strokeStyle(),
+      fill: fillStyle(),
+      image: new ol.style.Circle({
+        fill: fillStyle(),
+        stroke: strokeStyle(),
+        radius: 8,
+      }),
+    })
+  );
+};
+
+$("#js-stroke-width").slider({
+  min: 1,
+  max: 10,
+  step: 1,
+  value: 1,
+  slide: function (event, ui) {
+    $("#js-stroke-width-value").text(ui.value);
+    setStyles();
+  },
+});
+
+$("#js-fill-opacity").slider({
+  min: 0,
+  max: 100,
+  step: 1,
+  value: 50,
+  slide: function (event, ui) {
+    $("#js-fill-opacity-value").text(ui.value + "%");
+    setStyles();
+  },
+});
+
+$("#js-stroke-colour, #js-fill-colour").spectrum({
+  color: "black",
+  change: setStyles,
+});
+
+$("#js-stroke-style").on("change", setStyles);
+
+var fillStyle = function () {
+  var rgb = $("#js-fill-colour").spectrum("get").toRgb();
+  return new ol.style.Fill({
+    color: [rgb.r, rgb.g, rgb.b, $("#js-fill-opacity").slider("value") / 100],
+  });
+};
+
+var strokeStyle = function () {
+  return new ol.style.Stroke({
+    color: $("#js-stroke-colour").spectrum("get").toHexString(),
+    width: $("#js-stroke-width").slider("value"),
+    lineDash: $("#js-stroke-style").val() === "solid" ? undefined : [8],
+  });
+};
+
+//模态框的操作相应
 $(function () {
+  $("#btn").click(function () {
+    $("#myModal").modal("toggle");
+  });
+
+  $("#btn0").click(function () {
+    //调用方法
+    $("#myModal").modal("hide");
+  });
+
+  $("#btn1").click(function () {
+    // $("#myModal").modal({
+    //     show:true,
+    // });
+    $("#myModal1").modal("toggle");
+  });
+
+  $("#btn11").click(function () {
+    //调用方法
+    $("#myModal1").modal("hide");
+  });
+
   $("#btn2").click(function () {
     // $("#myModal").modal({
     //     show:true,
@@ -221,28 +325,46 @@ $(function () {
 
   $("#btn22").click(function () {
     //调用方法
-    $("#myModal2").modal("toggle");
+    $("#myModal2").modal("hide");
+    console.log("hide");
   });
 
   //事件使用 对应组件选择器.on(事件名,事件处理函数)
-  $("#myModal2").on("show.bs.modal", function () {
+  $("#myModal,#myModal1,#myModal2").on("show.bs.modal", function () {
     console.log("调用show执行1");
   });
-  $("#myModal2").on("shown.bs.modal", function () {
+  $("#myModal").on("shown.bs.modal", function () {
+    //console.log("展示之后执行2");
+    var chosed = document.getElementById("SpecChosed");
+    //  chosed.style.display = "inline";
+    chosed.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        layerChosed = event.target.id;
+      }
+      //event.target.id就对应了选中项的ID号，也就是数据在数据库里面对应的名称
+    });
+    console.log(layerChosed);
+  });
+  $("#myModal1").on("show.bs.modal", function () {
+    var chosed = document.getElementById("BaseChosed");
+    //  chosed.style.display = "inline";
+    chosed.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        layerChosed = event.target.id;
+      }
+      //event.target.id就对应了选中项的ID号，也就是数据在数据库里面对应的名称
+    });
+    console.log(layerChosed);
+  });
+  $("#myModal2").on("show.bs.modal", function () {
     console.log("展示之后执行2");
   });
-  $("#myModal2").on("hide.bs.modal", function () {
+  $("#myModal,#myModal1,#myModal2").on("hide.bs.modal", function () {
     console.log("调用hide执行1");
   });
-  $("#myModal2").on("hidden.bs.modal", function () {
+  $("#myModal,#myModal1,#myModal2").on("hidden.bs.modal", function () {
     console.log("完全隐藏之后执行2");
   });
 });
 
-//=============这个页面可以等一等慢点做
-
-//TODO 加入全局的查询，获取到相关的数据，并以结果列表的形式显示出来
-
-//TODO 这个里面要有点击数据，弹出标签，然后里面引导出内容这一部分
-
-//TODO 针对加入的一些属性和内容，涉及统计分析的可视化方式
+//TODO 然后实现点击数据，可以显示其属性的那种标注性质的
