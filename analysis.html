@@ -106,7 +106,6 @@
           type="radio"
           name="rtoggle"
           value="satellite"
-          checked="checked"
         />
         <!-- See a list of Mapbox-hosted public styles at -->
         <!-- https://docs.mapbox.com/api/maps/styles/#mapbox-styles -->
@@ -115,7 +114,13 @@
         <label for="light-v10">light</label>
         <input id="dark-v10" type="radio" name="rtoggle" value="dark" />
         <label for="dark-v10">dark</label>
-        <input id="streets-v11" type="radio" name="rtoggle" value="streets" />
+        <input
+          id="streets-v11"
+          type="radio"
+          name="rtoggle"
+          value="streets"
+          checked="checked"
+        />
         <label for="streets-v11">streets</label>
         <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
         <label for="outdoors-v11">outdoors</label>
@@ -151,7 +156,7 @@
                 aria-controls="collapseOne"
                 style="font-size: 16px"
               >
-                搜索结果
+                选择数据
               </a>
             </h4>
           </div>
@@ -161,17 +166,7 @@
             role="tabpanel"
             aria-labelledby="headingOne"
           >
-            <div class="panel-body">
-              <a href="#">直隶省</a>|<a href="#">山西省</a>|<a href="#"
-                >山东省</a
-              >|<a href="#">河南省</a>|<a href="#">江苏省</a>|<a href="#"
-                >浙江省</a
-              >|<a href="#">江西省</a>|<a href="#">福建省</a>|<a href="#"
-                >广东省</a
-              >|<a href="#">广西省</a>|<a href="#">湖南省</a>|<a href="#"
-                >湖北省</a
-              >
-            </div>
+            <div class="panel-body" id="chooseData"></div>
           </div>
         </div>
         <button class="btn btn-success btn-smm" id="btn2">统计分析</button>
