@@ -96,7 +96,7 @@ function openMenu() {
 }
 
 var wfsVectorLayer = null;
-var layerChosed = null;
+var layerChosed = null; //普适性的选中的数据
 var existData = [];
 function GetData(a) {
   wfsVectorLayer = new ol.layer.Vector({
@@ -131,7 +131,11 @@ $("#map").click(function (e) {
   //构造请求url的时候，把坐标系写成3857，虽然后台数据是4326坐标系的，但geoserver能内部转换
   var url3857 =
     baseurl +
-    "geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=cite%3Aland84&LAYERS=cite%3Aland84&exceptions=application%2Fvnd.ogc.se_inimage&INFO_FORMAT=application/json&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A3857&STYLES=&WIDTH=101&HEIGHT=101&BBOX=" +
+    "geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=cite%3A" +
+    chosedLayer +
+    "&LAYERS=cite%3A" +
+    chosedLayer +
+    "&exceptions=application%2Fvnd.ogc.se_inimage&INFO_FORMAT=application/json&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A3857&STYLES=&WIDTH=101&HEIGHT=101&BBOX=" +
     (t3857[0] - 1).toString() +
     "%2C" +
     (t3857[1] - 1).toString() +
@@ -192,7 +196,7 @@ function createTextStyle(feature) {
 }
 //获取要素属性内容
 function getText(feature) {
-  return feature.get("les-miserables_name").toString();
+  return feature.get("NAME").toString();
 }
 
 var Trefer = {
@@ -224,11 +228,12 @@ function CustomedStyle() {
   inf = inf + Trefer[existData[existData.length - 1]] + "</a></li>";
   $("#MenuChosed").append(inf);
 }
-
+var chosedLayer = null; //表示在符号化中选中的图层
 function viewDataAttri(a) {
   //显示选中的图层的文本信息
   var btnDat = document.getElementById("btnCustom");
   btnDat.innerHTML = a + '&nbsp;<span class="caret">';
+  chosedLayer = referT[a];
   GetData(referT[a]);
   map.removeLayer(wfsVectorLayer);
   setStyles();
@@ -366,5 +371,3 @@ $(function () {
     console.log("完全隐藏之后执行2");
   });
 });
-
-//TODO 然后实现点击数据，可以显示其属性的那种标注性质的

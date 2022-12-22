@@ -141,7 +141,6 @@
           placeholder="输入搜索信息..."
         />
       </div>
-
       <div class="button-group">
         <!-- <button class="btn btn-success btn-smm" id="btn1"></button> -->
         <div class="panel panel-default panelanalysis">
@@ -172,50 +171,18 @@
         <button class="btn btn-success btn-smm" id="btn2">统计分析</button>
         <div class="modal fade" id="myModal2">
           <div class="modal-dialog">
-            <div class="modal-content">
-              <!--模态框标题-->
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">数据符号化</h4>
-              </div>
-              <!--中心内容-->
-              <form action="#">
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">选择数据</label>
-                    <input
-                      type=""
-                      class="form-control"
-                      id="exampleInputEmail1"
-                      placeholder="数据选择..."
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputFile">符号化文件</label>
-                    <input type="file" id="exampleInputFile2" />
-                    <p class="help-block">文件为ArcGIS软件导出的符号配置文件</p>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" /> 同时打开本机ArcGIS软件
-                    </label>
-                  </div>
-                </div>
-                <!--脚注-->
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">确定</button>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-dismiss="modal"
-                  >
-                    取消
-                  </button>
-                </div>
-              </form>
-            </div>
+            <div
+              class="modal-content"
+              id="insideHtml"
+              style="
+                height: 500px;
+                width: 1000px;
+                top: 50%;
+                left: 50%;
+                position: absolute;
+                transform: translate(-50%, 0);
+              "
+            ></div>
           </div>
         </div>
       </div>
