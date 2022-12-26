@@ -10,6 +10,13 @@ var referT = {
   成都市部分POI数据: "poi84",
 };
 function viewDataAttri(a) {
+  //每更改一次选择，更新一下界面的div
+  var div = document.getElementById("attributethead");
+  div.innerHTML = "";
+  div = document.getElementById("attributetbody");
+  div.innerHTML = "";
+  div = document.getElementById("map");
+  div.innerHTML = "";
   //显示选中的图层的文本信息
   const btnDat = document.getElementById("dropmenuData");
   btnDat.innerHTML = a + '&nbsp;<span class="caret">';
@@ -144,7 +151,7 @@ var wfsVectorLayer = null; //显示选中的数据要素
 var drawedFeature = null;
 var modifiedFeatures = null;
 
-// 添加工具图层，新增、修改、删除选择都在这个图层上进行
+// 添加图层
 var source = new ol.source.Vector({ wrapX: false });
 var vector = new ol.layer.Vector({
   source: source,
@@ -316,13 +323,6 @@ modify.on("modifyend", function (e) {
   //console.log("drawend里面的source的feature：" + source.getFeatures());
 });
 
-// function Clear() {
-//   var div = document.getElementById("attributethead");
-//   div.innerHTML = "";
-//   div = document.getElementById("attributetbody");
-//   div.innerHTML = "";
-// }
-
 // 把修改提交到服务器端
 function WWfs(features1, features2, features3) {
   var WFSTSerializer = new ol.format.WFS();
@@ -377,4 +377,37 @@ function QueD() {
     }),
   });
   map.addLayer(wfsVectorLayer);
+}
+
+//制图风格，标注内容要从要素中获取，每个要素的name_ch属性不同，所以制图风格是方法，而不是静态的
+function polygonStyleFunction(feature) {
+  return new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: "rgba(192, 0, 0, 1)",
+      width: 2,
+    }),
+    fill: new ol.style.Fill({
+      color: "rgba(192, 192, 192, 0.5)",
+    }),
+    text: createTextStyle(feature),
+  });
+}
+//创建注记
+function createTextStyle(feature) {
+  return new ol.style.Text({
+    font: "20px Microsoft YaHei",
+    text: getText(feature),
+    fill: new ol.style.Fill({
+      color: "rgba(192, 0, 0, 1)",
+    }),
+    stroke: new ol.style.Stroke({ color: "rgba(255, 255, 255, 1)", width: 1 }),
+  });
+}
+//获取要素属性内容
+function getText(feature) {
+  if (feature.get("les-miserables_name")) {
+    return feature.get("les-miserables_name").toString();
+  } else {
+    return "tool";
+  }
 }

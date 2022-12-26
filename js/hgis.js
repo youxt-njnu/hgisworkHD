@@ -24,6 +24,7 @@ $.ajax({
   },
 });
 
+//==========================lineH
 var hrChart = echarts.init(document.getElementById("lineH"));
 
 function hFun(x_data, y_data) {
@@ -130,7 +131,7 @@ function hFun(x_data, y_data) {
   );
 }
 
-//==================================graphH
+//==========================graphH
 var dom = document.getElementById("graphH");
 var chartGraph = echarts.init(dom, null, {
   renderer: "canvas",
@@ -328,31 +329,3 @@ var map = new ol.Map({
   layers: layers,
   view: view,
 });
-
-//======================交互
-
-//TODO 针对折线图的mouseover，获取到停留在的地方对应到关键词属性，这样就能获取到对应的其他属性：几何数据
-
-//TODO 针对获取到的对应的几何数据，在地图上展示，并且缩放到视图范围内
-
-// //地图渲染完成后的事件
-// map.once("rendercomplete", function () {
-//   viewFitLayer(topiclayer);
-//   console.log("ok");
-// });
-// //把地图视图缩放到geojson测试数据视图范围内
-
-// //视图缩放至图层范围
-// function viewFitLayer(layer) {
-//   var extent = layer.getSource().getExtent();
-//   if (extent) {
-//     view.fit(extent, {
-//       duration: 1000,
-//       easing: ol.easing.UpAndDown,
-//     });
-//   }
-// }
-
-//TODO 针对得到的停留地的关键词属性，突出显示关系图中对应的圆
-
-//TODO 针对得到的停留地的关键词属性，查找所有与之相关的关键词，利用的是links

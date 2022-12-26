@@ -1,8 +1,3 @@
-// properties: {
-//   description:
-//     '<img src="img/hangzhou.png" alt="" style="width: 60%;"><br/><span style="font-size: 16px; padding: 10px;"><a href="http://iqh.ruc.edu.cn/zglsdlyj/lsdl_lzjj/gjxt/e8165bd4f0e2406a985c25affab43693.htm">详情</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">收藏</a></span><span style="font-size: 16px; padding: 10px;"><a href="#">共享</a></span>',
-//   icon: "theatre-15",
-// }
 var valueFromPageA = decodeURI(window.location.search);
 console.log("valueFromPageA: " + valueFromPageA);
 var reg = valueFromPageA.split("=");
@@ -16,27 +11,6 @@ var view = new ol.View({
   // 比例尺级数为9
   zoom: 11,
 });
-
-// //----------geoserver发布的WTMS底图,其实数据源是4326坐标系的，但是geoserver会适配前端的坐标系。
-// var topiclayer = new ol.layer.Image({
-//   title: "land84",
-//   source: new ol.source.ImageWMS({
-//     ratio: 1,
-//     url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
-//     // 请求参数
-//     params: {
-//       SERVICE: "WMS",
-//       VERSION: "1.1.1",
-//       REQUEST: "GetMap",
-//       FORMAT: "image/png",
-//       TRANSPARENT: true,
-//       tiled: true,
-//       LAYERS: "cite:land84", //图层，前面是工作空间，后面是图层名，
-//       exceptions: "application/vnd.ogc.se_inimage",
-//       singleTile: true, //单瓦片，渲染成一张图片
-//     },
-//   }),
-// });
 
 // 加载mapbox底图和geoserver发布的WTMS底图
 var layers = [
