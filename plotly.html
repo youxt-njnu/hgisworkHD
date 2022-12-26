@@ -39,7 +39,7 @@
       console.log("valueFromPageB: " + valueFromPageB);
       var reg = valueFromPageB.split("=");
       var nameC = reg[1].trim();
-      console.log(nameC);
+      console.log(nameC); //获取到选中的数据
 
       $(function () {
         var derivers = $.pivotUtilities.derivers;
@@ -48,6 +48,7 @@
           $.pivotUtilities.plotly_renderers
         );
 
+        //获取到数据的json信息并进行处理和可视化
         $.getJSON(
           "http://localhost:8080/geoserver/cite/wfs?service=WFS&request=GetFeature&version=1.1.0&typename=" +
             nameC +
@@ -61,8 +62,8 @@
             // console.log("YearSelect:" + YearSelect);
             $("#output").pivotUI(YearSelect, {
               renderers: renderers,
-              cols: ["NAME"],
-              rows: ["Shape_Area"],
+              cols: ["name"],
+              rows: ["area"],
               rendererName: "Table",
               rowOrder: "value_a_to_z",
               colOrder: "value_z_to_a",

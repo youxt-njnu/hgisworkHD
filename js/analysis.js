@@ -7,7 +7,7 @@ var valueFromPageA = decodeURI(window.location.search);
 console.log("valueFromPageA: " + valueFromPageA);
 var reg = valueFromPageA.split("=");
 // console.log(reg[1]);
-var chosedText = reg[1].trim();
+var chosedText = reg[1].trim(); //从index首页传过来的选中的那个参数
 
 //页面
 var view = new ol.View({
@@ -116,6 +116,7 @@ layerList.addEventListener("click", (event) => {
   }
 });
 
+//每个首页选中的分类的数据，里面有对应分类下的子数据，构建对应的映射
 var referL = {
   四川省: ["road84", "basecounty"],
   土地利用: ["land84"],
@@ -130,6 +131,7 @@ var Trefer = {
 
 var wfsVectorLayer = null;
 
+//获取数据
 function GetData(a) {
   wfsVectorLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -153,7 +155,7 @@ searchQueryElem.addEventListener("keyup", function () {
 });
 
 var styleFunction = function (feature) {
-  var cityName = feature.get("NAME");
+  var cityName = feature.get("name");
   var searchQuery = searchQueryElem.value;
   var opacity = 1;
 
@@ -216,6 +218,7 @@ $(function () {
 
   console.log(chosedText);
   var inf = "";
+  //动态添加映射下的数据集合
   for (var i = 0; i < referL[chosedText].length; i++) {
     GetData(referL[chosedText][i]);
     map.addLayer(wfsVectorLayer);
@@ -232,7 +235,7 @@ $(function () {
   $("#chooseData").append(inf);
 });
 
-//TODO 看这个数据的属性，选择对应的作图方式来作图
+//获取这个数据的属性，选择对应的作图方式来作图
 let choseList = document.getElementById("chooseData");
 choseList.addEventListener("click", (event) => {
   if (event.target.checked) {
@@ -251,6 +254,7 @@ choseList.addEventListener("click", (event) => {
           .setVisible(true);
         wfsVectorLayer = map.getLayers().item(ie + 5);
         // console.log("wfsVectorLayer:" + wfsVectorLayer);
+        //加载用于制图的html
         document.getElementById("insideHtml").innerHTML =
           "<object type='text/html' data='plotly.html?name=" +
           referL[chosedText][ie] +

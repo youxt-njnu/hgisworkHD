@@ -1,13 +1,22 @@
 //================================lineH
 var names = []; //类别数组（实际用来盛放X轴坐标值）
 var series = [];
+var mps = null; //数据处理的辅助变量
+//获取到数据的json信息并进行处理和可视化
+
 $.ajax({
-  url: "../datmp/example.json",
+  url: "http://localhost:8080/geoserver/cite/wfs?service=WFS&request=GetFeature&version=1.1.0&typename=land84&outputFormat=json",
   data: {},
   type: "GET",
   success: function (data) {
-    //请求成功时执行该函数内容，data即为服务器返回的json对象
-    $.each(data.nodes, function (index, item) {
+    mps = data["features"];
+    var YearSelect = [];
+    for (var i = 0; i < mps.length; i++) {
+      YearSelect[i] = mps[i]["properties"];
+    }
+    //console.log("YearSelect:" + YearSelect);
+    //请求成功时执行该函数内容
+    $.each(YearSelect, function (index, item) {
       names.push(item.name); //挨个取出类别并填入类别数组
       series.push(item.value);
     });
@@ -134,86 +143,136 @@ chartGraph.showLoading();
 var linksL = [];
 var categoriesL = [];
 $.ajax({
-  url: "../datmp/LinkCategory.json",
+  url: "../datmp/Links.json",
   data: {},
   type: "GET",
   success: function (data) {
     //请求成功时执行该函数内容，data即为服务器返回的json对象
-    console.log(data);
-    linksL = data.links;
-    categoriesL = data.categories;
-    console.log(linksL);
-    console.log(categoriesL);
+    // console.log(data);
+    linksL = data;
+    categoriesL = [
+      {
+        name: "A",
+      },
+      {
+        name: "B",
+      },
+      {
+        name: "C",
+      },
+      {
+        name: "D",
+      },
+      {
+        name: "E",
+      },
+      {
+        name: "F",
+      },
+      {
+        name: "G",
+      },
+      {
+        name: "H",
+      },
+      {
+        name: "I",
+      },
+    ];
   },
   error: function (data) {
     console.log("faile");
     console.log(data);
   },
 });
-$.getJSON("../datmp/example.json", function (graph) {
-  chartGraph.hideLoading();
-  graph.nodes.forEach(function (node) {
-    node.label = {
-      show: node["symbolSize"] > 30,
-    };
-  });
-  option = {
-    title: {
-      text: "关键词图谱",
-      subtext: "Default layout",
-      top: "bottom",
-      left: "right",
-    },
-    tooltip: {},
-    legend: [
-      {
-        // selectedMode: 'single',
-        data: categoriesL.map(function (a) {
-          return a.name;
-        }),
+$.getJSON(
+  "http://localhost:8080/geoserver/cite/wfs?service=WFS&request=GetFeature&version=1.1.0&typename=land84&outputFormat=json",
+  function (graph) {
+    chartGraph.hideLoading();
+    mps = graph["features"];
+    var YearSelect = [];
+    var tabletxt = "";
+    for (var i = 0; i < mps.length; i++) {
+      YearSelect[i] = mps[i]["properties"];
+      console.log(YearSelect[i]);
+      tabletxt +=
+        "<tr><td>" +
+        YearSelect[i]["id"] +
+        "</td><td>" +
+        YearSelect[i]["category"] +
+        "</td><td>" +
+        YearSelect[i]["name"] +
+        "</td><td>" +
+        YearSelect[i]["value"] +
+        "</td><tr>";
+      $("#attributetbody").append(tabletxt);
+    }
+
+    //console.log("YearSelect:" + YearSelect);
+    //请求成功时执行该函数内容
+    YearSelect.forEach(function (node) {
+      node.label = {
+        show: node["symbolSize"] > 30,
+      };
+    });
+    option = {
+      title: {
+        text: "关键词图谱",
+        subtext: "Default layout",
+        top: "bottom",
+        left: "right",
       },
-    ],
-    animationDuration: 1500,
-    animationEasingUpdate: "quinticInOut",
-    series: [
-      {
-        name: "关键词图谱",
-        type: "graph",
-        layout: "force",
-        data: graph.nodes,
-        links: linksL,
-        categories: categoriesL,
-        label: {
-          position: "right",
-          formatter: "{b}",
+      tooltip: {},
+      legend: [
+        {
+          // selectedMode: 'single',
+          data: categoriesL.map(function (a) {
+            return a.name;
+          }),
         },
-        lineStyle: {
-          color: "source",
-          curveness: 0.3,
-        },
-        emphasis: {
-          focus: "adjacency",
+      ],
+      animationDuration: 1500,
+      animationEasingUpdate: "quinticInOut",
+      series: [
+        {
+          name: "关键词图谱",
+          type: "graph",
+          layout: "force",
+          data: YearSelect,
+          links: linksL,
+          categories: categoriesL,
+          label: {
+            position: "right",
+            formatter: "{b}",
+          },
           lineStyle: {
-            width: 10,
+            color: "source",
+            curveness: 0.3,
+          },
+          emphasis: {
+            focus: "adjacency",
+            lineStyle: {
+              width: 10,
+            },
+          },
+          force: {
+            //力引导布局相关的配置项
+            repulsion: 300, //节点之间的斥力因子。
+            edgeLength: 200, //边的两个节点之间的距离，这个距离也会受 repulsion。
+          },
+          legendHoverLink: true, //可以点击图例来隐藏一个组
+          roam: true, //开启鼠标平移及缩放
+          draggable: false, //节点支持鼠标拖拽
+          labelLayout: {
+            moveOverlap: "shiftX", //标签重叠时，挪动标签防止重叠
+            draggable: true, //节点标签允许鼠标拖拽定位
           },
         },
-        force: {
-          //力引导布局相关的配置项
-          repulsion: 300, //节点之间的斥力因子。
-          edgeLength: 200, //边的两个节点之间的距离，这个距离也会受 repulsion。
-        },
-        legendHoverLink: true, //可以点击图例来隐藏一个组
-        roam: true, //开启鼠标平移及缩放
-        draggable: false, //节点支持鼠标拖拽
-        labelLayout: {
-          moveOverlap: "shiftX", //标签重叠时，挪动标签防止重叠
-          draggable: true, //节点标签允许鼠标拖拽定位
-        },
-      },
-    ],
-  };
-  chartGraph.setOption(option);
-});
+      ],
+    };
+    chartGraph.setOption(option);
+  }
+);
 
 // if (option && typeof option === "object") {
 //   chartGraph.setOption(option);
@@ -271,7 +330,6 @@ var map = new ol.Map({
 });
 
 //======================交互
-//TODO 前后端交互，访问到数据对应的属性表
 
 //TODO 针对折线图的mouseover，获取到停留在的地方对应到关键词属性，这样就能获取到对应的其他属性：几何数据
 

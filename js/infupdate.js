@@ -40,7 +40,7 @@ function viewDataAttri(a) {
       }
       //验证是否获取到了图层的名字和对应的属性列表名字;
       console.log(
-        "第一步获取到的layNameCol，此时已经构建了cite中对应图层的字典结构："
+        "第一步获取到的layNameCol，此时已经构建了cite中对应图层的字典结构"
       );
       for (var key in layNameCol) {
         console.log(key + " : " + layNameCol[key]);
@@ -52,6 +52,7 @@ function viewDataAttri(a) {
   });
 
   console.log("这边第一步首先查看下，选择的图层对应的参考对不对：" + referT[a]);
+  //获取选择的数据对应的属性信息
   data = {
     service: "wfs",
     version: "1.1.0",
@@ -92,7 +93,7 @@ function viewDataAttri(a) {
       LL = layNameCol[referT[a]].length - 1;
       chosed = referT[a];
       console.log("这一步是为了获取得到选中图层和其属性");
-      //把外面的map放到了里面
+      //在地图上显示选中的图层
       console.log("在map之前看看chosed是啥样的:" + chosed);
       map = new ol.Map({
         target: "map", //指向div
@@ -103,25 +104,6 @@ function viewDataAttri(a) {
               url: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGlua2xpbmsiLCJhIjoiY2t5azNveG05MnRwdTJ4bzhxM2JmNGg3aCJ9.giuzL5T9qkSSl9EWMUK9dg",
             }),
           }),
-          // new ol.layer.Image({
-          //   title: "land84",
-          //   source: new ol.source.ImageWMS({
-          //     ratio: 1,
-          //     url: "http://localhost:8080/geoserver/cite/wms?", //这个可以打开geoserver的preview，看openlayer页面截取url
-          //     // 请求参数
-          //     params: {
-          //       SERVICE: "WMS",
-          //       VERSION: "1.1.1",
-          //       REQUEST: "GetMap",
-          //       FORMAT: "image/png",
-          //       TRANSPARENT: true,
-          //       tiled: true,
-          //       LAYERS: "cite:" + chosed, //图层，前面是工作空间，后面是图层名，
-          //       exceptions: "application/vnd.ogc.se_inimage",
-          //       singleTile: true, //单瓦片，渲染成一张图片
-          //     },
-          //   }),
-          // }),
         ],
         view: new ol.View({
           center: [104, 30.7],
@@ -143,14 +125,6 @@ function viewDataAttri(a) {
             chosed +
             "&outputFormat=application/json&srsname=EPSG:4326",
         }),
-        // style: function (feature, resolution) {
-        //   return new ol.style.Style({
-        //     stroke: new ol.style.Stroke({
-        //       color: "blue",
-        //       width: 5,
-        //     }),
-        //   });
-        // },
       });
       map.addLayer(wfsVectorLayer);
       map.addLayer(vector);
@@ -161,31 +135,14 @@ function viewDataAttri(a) {
     },
   });
 }
-// // 获取坐标系
-// var proj4326 = ol.proj.get("EPSG:4326");
-// // 打印坐标系的轴方向，默认的轴方向为neu，生成GML文件，经纬度会是反的
-// console.log(proj4326.getAxisOrientation());
-// // 新建坐标系，修改轴方向为enu，经度、纬度、高程
-// var proj = new ol.proj.Projection({
-//   code: "EPSG:4326",
-//   axisOrientation: "enu",
-//   units: proj4326.getUnits(),
-//   canWrapX: true,
-//   extent: proj4326.getExtent(),
-//   global: true,
-//   worldExtent: proj4326.getWorldExtent(),
-// });
-// // 覆盖原来的4326坐标系，目的是为了保证生成GML文件中经纬度不反
-// ol.proj.addProjection(proj);
-// var proj4326new = ol.proj.get("EPSG:4326");
-// console.log("构建的新投影：" + proj4326new);
 
 //地图
 var map = new ol.Map();
 var isClick = 0;
+var newId = 1;
 var wfsVectorLayer = null; //显示选中的数据要素
 var drawedFeature = null;
-var modifiedFeature=null;
+var modifiedFeatures = null;
 
 // 添加工具图层，新增、修改、删除选择都在这个图层上进行
 var source = new ol.source.Vector({ wrapX: false });
@@ -229,104 +186,88 @@ function DeleteD() {
   map.removeInteraction(select);
   map.removeInteraction(modify);
   map.removeInteraction(draw);
-}
-
-function RelatedD() {
-  isClick = 4;
-  map.removeInteraction(select);
-  map.removeInteraction(modify);
-  map.removeInteraction(draw);
+  map.addInteraction(select);
 }
 
 // 点击按钮向geoserver提交数据
-function Clear() {
-  // if (typeInteraction.value == "search") {
-  //   alert("支持insert update delete");
-  // }
-  // 获取feature列表
-  var features = source.getFeatures();
-  console.log("clear函数里面获取到的source的features" + features);
-  // 获取一个feature
-  var feature = features[features.length - 1];
-  var tmp = "";
-  tmp = $("#At1").val();
-  // 转换坐标
-  var geometry = feature.getGeometry().clone();
-  geometry.applyTransform(function (flatCoordinates, flatCoordinates2, stride) {
-    for (var j = 0; j < flatCoordinates.length; j += stride) {
-      var y = flatCoordinates[j];
-      var x = flatCoordinates[j + 1];
-      flatCoordinates[j] = x;
-      flatCoordinates[j + 1] = y;
-    }
-  });
-  // update和delete的时候需要fid
-  feature.setId(tmp);
-  for (var i = 1; i <= LL; i++) {
-    tmp = $("#At" + String(i)).val();
-    feature.set(layNameCol[chosed][i], tmp);
-  }
-
-  feature.setGeometry(new ol.geom.Polygon([geometry.getCoordinates()]));
-  // 创建WFS解析器
-  var WFSTSerializer = new ol.format.WFS();
-  var insertFeatures = [];
-  var updateFeatures = [];
-  var deleteFeatures = [];
+function ClearD() {
+  //添加
+  var newFeature = null;
   if (isClick == 1) {
-    insertFeatures.push(feature);
-  }
-  if (isClick == 2) {
-    var updatefeature = select.getFeatures().getArray()[0];
-    updatefeature.setId($("#At1").val());
+    // 转换坐标
+    var geometry = drawedFeature.getGeometry().clone();
+    geometry.applyTransform(function (
+      flatCoordinates,
+      flatCoordinates2,
+      stride
+    ) {
+      for (var j = 0; j < flatCoordinates.length; j += stride) {
+        var y = flatCoordinates[j];
+        var x = flatCoordinates[j + 1];
+        flatCoordinates[j] = x;
+        flatCoordinates[j + 1] = y;
+      }
+    });
+
+    // 设置feature对应的属性，这些属性是根据数据源的字段来设置的
+    newFeature = new ol.Feature();
+    newFeature.set("fid", newId);
+    newFeature.setId(newId);
     for (var i = 1; i <= LL; i++) {
       tmp = $("#At" + String(i)).val();
-      updatefeature.set(layNameCol[chosed][i], tmp);
+      newFeature.set(layNameCol[chosed][i], tmp);
     }
-    updateFeatures.push(updatefeature);
+    newFeature.setGeometry(new ol.geom.Polygon([geometry.getCoordinates()]));
+    // 更新id
+    newId = newId + 1;
+    select.getFeatures().clear();
   }
-  if (isClick == 3) {
-    deleteFeatures.push(feature);
-  }
-  // 格式：writeTransaction(inserts, updates, deletes, options)
-  // updates和deletes都需要要素有唯一ID，进行索引
-  // insert因为是新增，所以不需要
-  var featObject = WFSTSerializer.writeTransaction(
-    insertFeatures,
-    updateFeatures,
-    deleteFeatures,
-    {
-      featureNS: "http://localhost:8080/geoserver/cite", //工作区URI,或者http://geoserver.org/cite
-      // featurePrefix: "cite", //工作区名称
-      featureType: chosed, //图层名称
-      srsName: "EPSG:4326", //坐标系
-    }
-  );
-  var serializer = new XMLSerializer();
-  var featString = serializer.serializeToString(featObject);
-  // 打印到控制台看看效果，openlayer默认生成的GML中几何字段名为geometry
-  console.log(featString);
 
-  // 上传到geoserver
-  // $.ajax({
-  //   type: "POST",
-  //   url: "http://localhost:8080/geoserver/wfs?service=wfs",
-  //   contentType: "text/xml",
-  //   data: featString,
-  //   dataType: "json",
-  //   success: function (data) {
-  //     source.removeFeature(feature);
-  //     console.log("success:" + data);
-  //   },
-  //   error: function (data) {
-  //     source.removeFeature(feature);
-  //     console.log("fail to upload the data:" + data);
-  //   },
-  // });
-  var request = new XMLHttpRequest();
-  request.open("POST", "http://localhost:8080/geoserver/wfs?service=wfs");
-  request.setRequestHeader("Content-Type", "text/xml");
-  request.send(featString);
+  //修改
+  var modifiedFeature = null;
+  if (isClick == 2) {
+    if (modifiedFeatures && modifiedFeatures.getLength() > 0) {
+      // 转换坐标
+      modifiedFeature = modifiedFeatures.item(0).clone();
+      // 注意ID是必须，通过ID才能找到对应修改的feature
+      modifiedFeature.setId(modifiedFeatures.item(0).getId());
+      // 调换经纬度坐标，以符合wfs协议中经纬度的位置
+      modifiedFeature
+        .getGeometry()
+        .applyTransform(function (flatCoordinates, flatCoordinates2, stride) {
+          for (var j = 0; j < flatCoordinates.length; j += stride) {
+            var y = flatCoordinates[j];
+            var x = flatCoordinates[j + 1];
+            flatCoordinates[j] = x;
+            flatCoordinates[j + 1] = y;
+          }
+        });
+    }
+    select.getFeatures().clear();
+    modifiedFeatures = null;
+  }
+  //删除
+  var tmp = null;
+  if (isClick == 3) {
+    // 删选择器选中的feature
+    if (select.getFeatures().getLength() > 0) {
+      //tmp = select.getFeatures().item(0);
+      let featureId = select.getFeatures().getArray()[0].getId();
+      tmp = wfsVectorLayer.getSource().getFeatureById(featureId);
+      // 从地图删除
+      wfsVectorLayer.getSource().removeFeature(tmp);
+      select.getFeatures().clear();
+    }
+  }
+  console.log(
+    "AddFeature:" +
+      newFeature +
+      ",modifiedFeature:" +
+      modifiedFeature +
+      ",deleteFeature:" +
+      tmp
+  );
+  WWfs([newFeature], [modifiedFeature], [tmp]);
 }
 
 // 完成绘制（drawend）时激活
@@ -363,16 +304,16 @@ draw.on("drawend", function (e) {
 
   // 绘制结束时暂存绘制的feature
   drawedFeature = e.feature;
-  source.addFeature(e.feature);
-  console.log("drawend里面的source的feature：" + source.getFeatures());
+  //source.addFeature(e.feature);
+  //console.log("drawend里面的source的feature：" + source.getFeatures());
 });
 
 modify.on("modifyend", function (e) {
   console.log("modifyend");
   modify.setActive(false);
-  modifiedFeature=e.features;
-  source.addFeature(e.feature);
-  console.log("drawend里面的source的feature：" + source.getFeatures());
+  modifiedFeatures = e.features;
+  //source.addFeature(e.feature);
+  //console.log("drawend里面的source的feature：" + source.getFeatures());
 });
 
 // function Clear() {
@@ -382,10 +323,44 @@ modify.on("modifyend", function (e) {
 //   div.innerHTML = "";
 // }
 
-//查询设置
+// 把修改提交到服务器端
+function WWfs(features1, features2, features3) {
+  var WFSTSerializer = new ol.format.WFS();
+  var featObject = WFSTSerializer.writeTransaction(
+    features1,
+    features2,
+    features3,
+    {
+      featureNS: "http://www.opengeospatial.net/cite", // 注意这个值必须为创建工作区时的命名空间URI
+      featureType: chosed,
+      srsName: "EPSG:4326",
+    }
+  );
+  // 转换为xml内容发送到服务器端
+  var serializer = new XMLSerializer();
+  var featString = serializer.serializeToString(featObject);
+  // 打印到控制台看看效果，openlayer默认生成的GML中几何字段名为geometry
+  console.log(featString);
+  //上传到geoserver
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8080/geoserver/wfs?service=wfs",
+    contentType: "text/xml",
+    data: featString,
+    dataType: "json",
+    success: function (data) {
+      console.log("success:" + data);
+    },
+    error: function (data) {
+      console.log("fail to upload the data:" + data);
+    },
+  });
+}
+
+//点击查询实现对数据更新与否的查看
 function QueD() {
   isClick = 0;
-  source.clear();
+  //source.clear();
   if (wfsVectorLayer) {
     map.removeLayer(wfsVectorLayer);
   }
@@ -400,107 +375,6 @@ function QueD() {
         chosed +
         "&outputFormat=application/json&srsname=EPSG:4326",
     }),
-    // style: function (feature, resolution) {
-    //   return new ol.style.Style({
-    //     stroke: new ol.style.Stroke({
-    //       color: "blue",
-    //       width: 5,
-    //     }),
-    //   });
-    // },
   });
   map.addLayer(wfsVectorLayer);
-}
-//地图点击事件
-$("#map").click(function (e) {
-  if (isClick != 0) {
-    console.log("clicked");
-    return;
-  }
-  //获取地图上点击的地理坐标，WGS84坐标系
-  var t4326 = map.getEventCoordinate(e.originalEvent);
-  console.log(chosed);
-  //构造请求url
-  var url4326 =
-    baseurl +
-    "geoserver/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=cite%3A" +
-    chosed +
-    "&LAYERS=cite%3A" +
-    chosed +
-    "&exceptions=application%2Fvnd.ogc.se_inimage&INFO_FORMAT=application/json&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A4326&STYLES=&WIDTH=101&HEIGHT=101&BBOX=" +
-    (t4326[0] - 0.0001).toString() +
-    "%2C" +
-    (t4326[1] - 0.0001).toString() +
-    "%2C" +
-    (t4326[0] + 0.0001).toString() +
-    "%2C" +
-    (t4326[1] + 0.0001).toString();
-  console.log(url4326);
-  $.ajax({
-    url: url4326,
-    type: "GET",
-    dataType: "json",
-    // async: false,
-    headers: { "Content-Type": "application/json;charset=utf8" },
-    success: function (data) {
-      console.log(data);
-      //这个方法直接把geojson转为feature数组
-      features = new ol.format.GeoJSON().readFeatures(data);
-      // 将feature数组中第一个feature放到source中
-      source.addFeature(features[0]);
-      console.log(
-        "点击图层得出属性后就是click里的source的feature:" + source.getFeatures()
-      );
-      // //更新属性表
-      // for (var i = 0; i < data["features"].length; i++) {
-      //   var properties = data["features"][i]["properties"]; //一行
-      //   var tabletxt = "<tr><td>";
-      //   for (var j = 1; j < layNameCol[chosed].length - 1; j++) {
-      //     tabletxt += properties[layNameCol[chosed][j]] + "</td><td>";
-      //   }
-      //   tabletxt +=
-      //     properties[layNameCol[chosed][layNameCol[chosed].length - 1]] +
-      //     "</td><tr>";
-      //   //console.log(tabletxt);
-      //   $("#attributetbody").append(tabletxt);
-      // }
-    },
-    error: function (data) {
-      console.log("faile");
-      console.log(data);
-    },
-  });
-});
-
-//制图风格，标注内容要从要素中获取，每个要素的name_ch属性不同，所以制图风格是方法，而不是静态的
-function polygonStyleFunction(feature) {
-  return new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: "rgba(192, 0, 0, 1)",
-      width: 2,
-    }),
-    fill: new ol.style.Fill({
-      color: "rgba(192, 192, 192, 0.5)",
-    }),
-    text: createTextStyle(feature),
-  });
-}
-//创建注记
-function createTextStyle(feature) {
-  return new ol.style.Text({
-    font: "20px Microsoft YaHei",
-    text: getText(feature),
-    fill: new ol.style.Fill({
-      color: "rgba(192, 0, 0, 1)",
-    }),
-    stroke: new ol.style.Stroke({ color: "rgba(255, 255, 255, 1)", width: 1 }),
-  });
-}
-//获取要素属性内容
-function getText(feature) {
-  if (feature.get("les-miserables_name")) {
-    return feature.get("les-miserables_name").toString();
-  } else {
-    return "tool";
-  }
 }

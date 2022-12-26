@@ -35,3 +35,12 @@
   padding: 4px 12px;
   font-size: 10px;
 }
+
+#insideHtml {
+  height: 500px;
+  width: 1000px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0);
+}

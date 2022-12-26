@@ -85,6 +85,7 @@ layerList.addEventListener("click", (event) => {
   }
 });
 
+//打开菜单，显示自定义符号的控件组
 function openMenu() {
   console.log("ok");
   var tmp = document.getElementById("plane");
@@ -98,6 +99,7 @@ function openMenu() {
 var wfsVectorLayer = null;
 var layerChosed = null; //普适性的选中的数据
 var existData = [];
+//获取数据
 function GetData(a) {
   wfsVectorLayer = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -112,6 +114,7 @@ function GetData(a) {
   });
 }
 
+//在地图上加载数据，并存入地图上现有的矢量数据集
 function LoadDat() {
   GetData(layerChosed);
   existData.push(layerChosed);
@@ -124,9 +127,9 @@ var baseurl = "http://localhost:8080/";
 $("#map").click(function (e) {
   //获取地图上点击的地理坐标，平面墨卡托坐标系
   var t3857 = map.getEventCoordinate(e.originalEvent);
-  console.log(t3857);
+  // console.log(t3857);
   t4326 = ol.proj.transform(t3857, "EPSG:3857", "EPSG:4326");
-  console.log(t4326);
+  // console.log(t4326);
   // BBOX,minlng,minlat,maxlng,maxlat,平面墨卡托就是minx,miny,maxx,maxy，下面的url3857里的bbox是一个2m×2m的小矩形
   //构造请求url的时候，把坐标系写成3857，虽然后台数据是4326坐标系的，但geoserver能内部转换
   var url3857 =
@@ -196,9 +199,10 @@ function createTextStyle(feature) {
 }
 //获取要素属性内容
 function getText(feature) {
-  return feature.get("NAME").toString();
+  return feature.get("name").toString();
 }
 
+//针对cite工作区的数据，构建正反映射表
 var Trefer = {
   basecounty: "成都市部分县级面数据",
   road84: "成都市部分路网数据",
@@ -213,6 +217,7 @@ var referT = {
   成都市部分POI数据: "poi84",
 };
 
+//动态构建下拉菜单中的内容
 function CustomedStyle() {
   var btnDat = document.getElementById("MenuChosed");
   if (btnDat.innerHTML != "") {
@@ -229,8 +234,9 @@ function CustomedStyle() {
   $("#MenuChosed").append(inf);
 }
 var chosedLayer = null; //表示在符号化中选中的图层
+
+//显示选中的图层的文本信息并移除旧图层，添加符号化后的新图层
 function viewDataAttri(a) {
-  //显示选中的图层的文本信息
   var btnDat = document.getElementById("btnCustom");
   btnDat.innerHTML = a + '&nbsp;<span class="caret">';
   chosedLayer = referT[a];
@@ -240,6 +246,7 @@ function viewDataAttri(a) {
   map.addLayer(wfsVectorLayer);
 }
 
+//针对滑块性质，自定义符号系统
 var setStyles = function () {
   wfsVectorLayer.setStyle(
     new ol.style.Style({
@@ -342,6 +349,7 @@ $(function () {
     //console.log("展示之后执行2");
     var chosed = document.getElementById("SpecChosed");
     //  chosed.style.display = "inline";
+    //展示后获取选中的数据
     chosed.addEventListener("click", (event) => {
       if (event.target.checked) {
         layerChosed = event.target.id;
